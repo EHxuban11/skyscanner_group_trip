@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+ model Group {
+   id        String   @id @default(cuid())
+   name      String   @unique
+   members   Member[]
+   createdAt DateTime @default(now())
+ }
+
+
+model Member {
+  id        String @id @default(cuid())
+  name      String
+  group     Group  @relation(fields: [groupId], references: [id])
+  groupId   String
+}
