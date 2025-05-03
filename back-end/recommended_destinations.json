@@ -1,0 +1,107 @@
+[
+    {
+        "name": "Kos",
+        "iata": "KGS",
+        "categories": [
+            "sunny",
+            "beach",
+            "cultural",
+            "eco-lodges",
+            "vegan"
+        ]
+    },
+    {
+        "name": "Rhodes",
+        "iata": "RHO",
+        "categories": [
+            "sunny",
+            "beach",
+            "cultural",
+            "eco-lodges",
+            "vegan"
+        ]
+    },
+    {
+        "name": "Mykonos",
+        "iata": "JMK",
+        "categories": [
+            "sunny",
+            "beach",
+            "cultural",
+            "eco-lodges",
+            "vegan"
+        ]
+    },
+    {
+        "name": "Paros",
+        "iata": "PAS",
+        "categories": [
+            "sunny",
+            "beach",
+            "cultural",
+            "eco-lodges",
+            "vegan"
+        ]
+    },
+    {
+        "name": "Milos",
+        "iata": "MLO",
+        "categories": [
+            "sunny",
+            "beach",
+            "cultural",
+            "eco-lodges",
+            "vegan"
+        ]
+    },
+    {
+        "name": "Menorca",
+        "iata": "MAH",
+        "categories": [
+            "beach",
+            "sunny",
+            "cultural",
+            "eco-lodges"
+        ]
+    },
+    {
+        "name": "Bridgetown",
+        "iata": "BGI",
+        "categories": [
+            "beach",
+            "cultural",
+            "eco-lodges",
+            "vegan"
+        ]
+    },
+    {
+        "name": "Sharm El Sheikh",
+        "iata": "SSH",
+        "categories": [
+            "beach",
+            "cultural",
+            "eco-lodges",
+            "vegan"
+        ]
+    },
+    {
+        "name": "Velana International",
+        "iata": "MLE",
+        "categories": [
+            "beach",
+            "cultural",
+            "eco-lodges",
+            "vegan"
+        ]
+    },
+    {
+        "name": "John A. Osborne",
+        "iata": "MNI",
+        "categories": [
+            "cultural",
+            "beach",
+            "eco-lodges",
+            "vegan"
+        ]
+    }
+]
