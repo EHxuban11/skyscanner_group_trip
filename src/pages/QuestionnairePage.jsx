@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+// src/pages/QuestionnairePage.jsx
+import React, { useState, useContext } from 'react'
+import { useSearchParams, useNavigate, Link } from 'react-router-dom'
+import { MemberContext } from '../context/MemberContext'
 
 const COLORS = {
   pageBg: '#05203C',
@@ -6,7 +9,7 @@ const COLORS = {
   text: '#FFFFFF',
   hover: '#144679',
   active: '#0362E3',
-};
+}
 
 const INTERESTS = [
   'Vuelos más baratos',
@@ -18,24 +21,61 @@ const INTERESTS = [
   '✨ Comida excelente',
   '✨ Aventuras al aire libre',
   '✨ Vida nocturna y entretenimiento',
-];
+]
 
 function QuestionnairePage() {
-  const [budget, setBudget] = useState(2500);
-  const [tripLength, setTripLength] = useState(7);
-  const [ecoPriority, setEcoPriority] = useState(2);
-  const [interests, setInterests] = useState({});
+  const { member } = useContext(MemberContext)
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const groupId = searchParams.get('group')
+
+  const [budget, setBudget] = useState(2500)
+  const [tripLength, setTripLength] = useState(7)
+  const [ecoPriority, setEcoPriority] = useState(2)
+  const [interests, setInterests] = useState({})
 
   const handleInterestToggle = (item) => {
-    setInterests(prev => ({ ...prev, [item]: !prev[item] }));
-  };
+    setInterests(prev => ({ ...prev, [item]: !prev[item] }))
+  }
 
-  const handleSubmit = () => {
-    const selectedInterests = INTERESTS.filter(i => interests[i]);
-    const payload = { budget, tripLength, ecoPriority, interests: selectedInterests };
-    console.log('Questionnaire submitted:', payload);
-    alert('¡Cuestionario guardado! Continúa para ver tus resultados.');
-  };
+  const handleSubmit = async () => {
+    if (!member || !groupId) {
+      alert('Error: Member or group not specified.')
+      return
+    }
+
+    const selectedInterests = INTERESTS.filter(i => interests[i])
+    const payload = {
+      budget: Number(budget),
+      tripLength: Number(tripLength),
+      ecoPriority: Number(ecoPriority),
+      interests: selectedInterests,
+    }
+
+    try {
+      const response = await fetch(`/api/groups/${groupId}/members/${member.id}/questionnaire`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      if (!response.ok) throw new Error('Failed to save questionnaire')
+      alert('¡Cuestionario guardado! Continúa para ver tus resultados.')
+      navigate(`/group?group=${groupId}`)
+    } catch (err) {
+      alert(`Error: ${err.message}`)
+    }
+  }
+
+  if (!member || !groupId) {
+    return (
+      <div style={{ color: COLORS.text, textAlign: 'center', padding: '24px' }}>
+        <p>Error: Please select a member and group.</p>
+        <Link to="/" style={{ color: COLORS.active, textDecoration: 'none' }}>
+          ← Back to all trips
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <div className="questionnaire-page">
@@ -187,7 +227,7 @@ function QuestionnairePage() {
         </button>
       </div>
     </div>
-  );
+  )
 }
 
-export default QuestionnairePage;
+export default QuestionnairePage

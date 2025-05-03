@@ -32,8 +32,7 @@ npx prisma migrate dev --name init
 # generate Prisma client
 npx prisma generate
 
-
-
+npx prisma studio
 
 ### Deploy on Vercel
 To deploy the project on Vercel, run:
