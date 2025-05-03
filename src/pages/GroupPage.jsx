@@ -15,18 +15,18 @@ const COLORS = {
 }
 
 export default function GroupPage() {
-  const [searchParams]       = useSearchParams()
-  const groupId              = searchParams.get('group')
-  const { member, setMember }= useContext(MemberContext)
+  const [searchParams]         = useSearchParams()
+  const groupId                = searchParams.get('group')
+  const { member, setMember }  = useContext(MemberContext)
 
-  const [group, setGroup]         = useState(null)
-  const [responses, setResponses] = useState([])
-  const [rounds, setRounds]       = useState([])
-  const [round, setRound]         = useState(null)
-  const [roundVotes, setRoundVotes] = useState([])
-  const [loading, setLoading]     = useState(true)
-  const [error, setError]         = useState(null)
-  const [winner, setWinner]       = useState(null)
+  const [group, setGroup]             = useState(null)
+  const [responses, setResponses]     = useState([])
+  const [rounds, setRounds]           = useState([])
+  const [round, setRound]             = useState(null)
+  const [roundVotes, setRoundVotes]   = useState([])
+  const [loading, setLoading]         = useState(true)
+  const [error, setError]             = useState(null)
+  const [winner, setWinner]           = useState(null)
 
   // 1️⃣ Load group & questionnaires
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function GroupPage() {
         return Promise.all(
           data.members.map(m =>
             fetch(`/api/groups/${groupId}/members/${m.id}/questionnaire`)
-              .then(r => (r.ok ? r.json() : null))
+              .then(r => r.ok ? r.json() : null)
           )
         )
       })
@@ -77,6 +77,29 @@ export default function GroupPage() {
       .then(setRoundVotes)
       .catch(() => {})
   }, [round])
+
+  // 3.1️⃣ Auto-detect unanimous winner (confetti as soon as everyone votes yes)
+  useEffect(() => {
+    if (!group || !roundVotes.length || winner) return
+
+    const PLACES = [
+      'París, Francia',
+      'Barcelona, España',
+      'Roma, Italia',
+      'Tokio, Japón',
+      'Nueva York, EE.UU.'
+    ]
+
+    for (let place of PLACES) {
+      const allYes = group.members.every(m =>
+        roundVotes.some(v => v.place === place && v.memberId === m.id && v.value === true)
+      )
+      if (allYes) {
+        setWinner(place)
+        return
+      }
+    }
+  }, [roundVotes, group, winner])
 
   // 4️⃣ Cast a vote in current round
   const castVote = async (place, value) => {
@@ -138,8 +161,13 @@ export default function GroupPage() {
     return <Navigate to={`/questionario?group=${groupId}`} replace />
   }
 
+  // 5.1️⃣ Wait for round data
+  if (!round) {
+    return <div style={styles.center}>Loading round…</div>
+  }
+
   // 6️⃣ Winner screen (either unanimous or coin toss)
-  if (winner || (round && round.winner)) {
+  if (winner || round.winner) {
     const win = winner || round.winner
     return (
       <div style={styles.page}>
@@ -169,7 +197,7 @@ export default function GroupPage() {
   return (
     <div style={styles.page}>
       <div style={styles.container}>
-        <h2 style={styles.title}>{group.name} — Round {round?.number}</h2>
+        <h2 style={styles.title}>{group.name} — Round {round.number}</h2>
 
         <div style={styles.headsContainer}>
           {group.members.map(m => (
@@ -242,7 +270,6 @@ export default function GroupPage() {
   )
 }
 
-// Styles unchanged from before...
 const styles = {
   page:       { backgroundColor: COLORS.pageBg, minHeight: '100vh', color: COLORS.text, fontFamily: 'Arial, sans-serif' },
   container:  { maxWidth: 600, margin: '0 auto', padding: 16, textAlign: 'center' },

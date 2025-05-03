@@ -28,14 +28,25 @@ app.get('/api/hello', (req, res) => {
 //
 // ─── GROUPS ────────────────────────────────────────────────────────────────────
 //
+// GET /api/groups?memberId=…
 app.get('/api/groups', async (req, res, next) => {
+  const { memberId } = req.query
   try {
+    const where = memberId
+      // if a memberId is provided, only return groups where that member sits
+      ? { members: { some: { id: memberId } } }
+      // otherwise return no groups (or change to `{}` to return all)
+      : { id: { equals: null } }
+
     const groups = await prisma.group.findMany({
+      where,
       include: { members: true },
       orderBy: { createdAt: 'desc' },
     })
     res.json(groups)
-  } catch (err) { next(err) }
+  } catch (err) {
+    next(err)
+  }
 })
 
 app.post('/api/groups', async (req, res, next) => {
