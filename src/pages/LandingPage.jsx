@@ -1,4 +1,5 @@
 // src/pages/LandingPage.jsx
+
 import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { MemberContext } from '../context/MemberContext'
@@ -12,56 +13,99 @@ const COLORS = {
 }
 
 export default function LandingPage() {
-  const { member, logout } = useContext(MemberContext)
+  const { member, setMember, logout } = useContext(MemberContext)
+
+  // — Login state —
+  const [users, setUsers] = useState([])
+  const [loadingUsers, setLoadingUsers] = useState(false)
+  const [errorUsers, setErrorUsers] = useState(null)
+
+  // — Groups state —
   const [groups, setGroups] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [loadingGroups, setLoadingGroups] = useState(false)
+  const [errorGroups, setErrorGroups] = useState(null)
 
+  // 1️⃣ If no member, fetch all users for login
   useEffect(() => {
-    fetch('/api/groups')
-      .then(res => {
-        if (!res.ok) throw new Error(res.statusText)
-        return res.json()
-      })
-      .then(data => {
-        // no filter: always show all groups here
-        setGroups(data)
-      })
-      .catch(err => setError(err.message))
-      .finally(() => setLoading(false))
-  }, [])
+    if (!member) {
+      setLoadingUsers(true)
+      fetch('/api/users')
+        .then(r => {
+          if (!r.ok) throw new Error(r.statusText)
+          return r.json()
+        })
+        .then(setUsers)
+        .catch(err => setErrorUsers(err.message))
+        .finally(() => setLoadingUsers(false))
+    }
+  }, [member])
 
-  if (loading) return <div style={styles.loading}>Loading groups…</div>
-  if (error) return <div style={styles.error}>Error: {error}</div>
+  // 2️⃣ Once you have a member, fetch *only* their groups
+  useEffect(() => {
+    if (member) {
+      setLoadingGroups(true)
+      fetch(`/api/groups?memberId=${member.id}`)
+        .then(r => {
+          if (!r.ok) throw new Error(r.statusText)
+          return r.json()
+        })
+        .then(setGroups)
+        .catch(err => setErrorGroups(err.message))
+        .finally(() => setLoadingGroups(false))
+    }
+  }, [member])
+
+  // ← Login UI
+  if (!member) {
+    if (loadingUsers) return <div style={styles.loading}>Loading users…</div>
+    if (errorUsers)  return <div style={styles.error}>Error: {errorUsers}</div>
+
+    return (
+      <div style={styles.page}>
+        <div style={styles.container}>
+          <h2 style={styles.title}>Who’s logging in?</h2>
+          <ul style={styles.list}>
+            {users.map(u => (
+              <li key={u.id} style={styles.listItem}>
+                <button
+                  style={styles.loginButton}
+                  onClick={() => setMember(u)}
+                >
+                  {u.name}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    )
+  }
+
+  // ← Groups UI
+  if (loadingGroups) return <div style={styles.loading}>Loading groups…</div>
+  if (errorGroups)  return <div style={styles.error}>Error: {errorGroups}</div>
 
   return (
     <div style={styles.page}>
       <div style={styles.container}>
         <h2 style={styles.title}>Your Trips</h2>
 
-        {/* Always-visible user section */}
         <div style={styles.userSection}>
-          {member ? (
-            <>
-              <p style={styles.welcome}>Viewing as <strong>{member.name}</strong></p>
-              <button style={styles.logoutButton} onClick={logout}>
-                Log Out
-              </button>
-            </>
-          ) : (
-            <p style={styles.welcome}>
-              You’re not logged in. Select yourself when you open a group.
-            </p>
-          )}
+          <p style={styles.welcome}>
+            Viewing as <strong>{member.name}</strong>
+          </p>
+          <button style={styles.logoutButton} onClick={logout}>
+            Log Out
+          </button>
         </div>
 
         <ul style={styles.list}>
-          {groups.map(group => (
-            <li key={group.id} style={styles.listItem}>
-              <Link to={`/group?group=${group.id}`} style={styles.link}>
+          {groups.map(g => (
+            <li key={g.id} style={styles.listItem}>
+              <Link to={`/group?group=${g.id}`} style={styles.link}>
                 <span style={styles.icon}>🏖️</span>
-                <span style={styles.name}>{group.name}</span>
-                <span style={styles.count}>({group.members.length})</span>
+                <span style={styles.name}>{g.name}</span>
+                <span style={styles.count}>({g.members.length})</span>
                 <span style={styles.arrow}>›</span>
               </Link>
             </li>
@@ -91,6 +135,18 @@ const styles = {
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  loginButton: {
+    width: '100%',
+    padding: '12px',
+    margin: '8px 0',
+    backgroundColor: COLORS.cardBg,
+    border: '1px solid #444',
+    borderRadius: '4px',
+    color: COLORS.text,
+    fontSize: '1rem',
+    cursor: 'pointer',
+    textAlign: 'left',
+  },
   userSection: {
     display: 'flex',
     alignItems: 'center',
@@ -119,12 +175,7 @@ const styles = {
     padding: 0,
     margin: 0,
   },
-  listItem: {
-    backgroundColor: COLORS.cardBg,
-    borderRadius: '8px',
-    marginBottom: '12px',
-    overflow: 'hidden',
-  },
+  listItem: { overflow: 'hidden' },
   link: {
     display: 'flex',
     alignItems: 'center',
@@ -133,30 +184,10 @@ const styles = {
     textDecoration: 'none',
     transition: 'background-color 0.2s',
   },
-  icon: {
-    marginRight: '12px',
-    fontSize: '1.5rem',
-  },
-  name: {
-    flexGrow: 1,
-    fontSize: '1rem',
-  },
-  count: {
-    marginRight: '8px',
-    fontSize: '0.9rem',
-    opacity: 0.75,
-  },
-  arrow: {
-    fontSize: '1.2rem',
-  },
-  loading: {
-    padding: '24px',
-    textAlign: 'center',
-    color: COLORS.text,
-  },
-  error: {
-    padding: '24px',
-    textAlign: 'center',
-    color: 'red',
-  },
+  icon: { marginRight: '12px', fontSize: '1.5rem' },
+  name: { flexGrow: 1, fontSize: '1rem' },
+  count: { marginRight: '8px', fontSize: '0.9rem', opacity: 0.75 },
+  arrow: { fontSize: '1.2rem' },
+  loading: { padding: '24px', textAlign: 'center', color: COLORS.text },
+  error: { padding: '24px', textAlign: 'center', color: 'red' },
 }

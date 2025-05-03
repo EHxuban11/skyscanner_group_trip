@@ -1,3 +1,5 @@
+// prisma/schema.prisma
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,30 +10,62 @@ datasource db {
 }
 
 model Group {
-  id                    String         @id @default(cuid())
-  name                  String         @unique
-  members               Member[]
-  questionnaires        Questionnaire[]
-  createdAt             DateTime       @default(now())
+  id             String          @id @default(cuid())
+  name           String          @unique
+  members        Member[]
+  questionnaires Questionnaire[]
+  votes          Vote[]          // all votes (across rounds)
+  rounds         VotingRound[]   // ← new
+  createdAt      DateTime        @default(now())
 }
 
 model Member {
-  id                    String         @id @default(cuid())
-  name                  String
-  group                 Group          @relation(fields: [groupId], references: [id])
-  groupId               String
-  questionnaires        Questionnaire[]
+  id             String          @id @default(cuid())
+  name           String
+  group          Group           @relation(fields: [groupId], references: [id])
+  groupId        String
+  questionnaires Questionnaire[]
+  votes          Vote[]          // all votes (across rounds)
 }
 
 model Questionnaire {
-  id                    String         @id @default(cuid())
-  member                Member         @relation(fields: [memberId], references: [id])
-  memberId              String
-  group                 Group          @relation(fields: [groupId], references: [id])
-  groupId               String
-  budget                Int
-  tripLength            Int
-  ecoPriority           Int
-  interests             Json           // Store interests as JSON array
-  completedAt           DateTime       @default(now())
+  id          String   @id @default(cuid())
+  member      Member   @relation(fields: [memberId], references: [id])
+  memberId    String
+  group       Group    @relation(fields: [groupId], references: [id])
+  groupId     String
+  budget      Int
+  tripLength  Int
+  ecoPriority Int
+  interests   Json
+  completedAt DateTime @default(now())
+}
+
+model VotingRound {
+  id        String     @id @default(cuid())
+  group     Group      @relation(fields: [groupId], references: [id])
+  groupId   String
+  number    Int        @default(1)
+  status    String     @default("OPEN")   // OPEN, CLOSED, COIN_TOSS
+  winner    String?                     // place name if decided
+  createdAt DateTime   @default(now())
+  endedAt   DateTime?
+  votes     Vote[]
+
+  @@unique([groupId, number])
+}
+
+model Vote {
+  id        String      @id @default(cuid())
+  member    Member      @relation(fields: [memberId], references: [id])
+  memberId  String
+  group     Group       @relation(fields: [groupId], references: [id])
+  groupId   String
+  round     VotingRound @relation(fields: [roundId], references: [id])
+  roundId   String
+  place     String
+  value     Boolean
+  createdAt DateTime    @default(now())
+
+  @@unique([memberId, roundId, place])
 }

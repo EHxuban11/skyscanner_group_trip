@@ -1,5 +1,5 @@
 // src/pages/QuestionnairePage.jsx
-import React, { useState, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useSearchParams, useNavigate, Link } from 'react-router-dom'
 import { MemberContext } from '../context/MemberContext'
 
@@ -29,6 +29,9 @@ function QuestionnairePage() {
   const navigate = useNavigate()
   const groupId = searchParams.get('group')
 
+  // track whether we're checking for an existing questionnaire
+  const [checking, setChecking] = useState(true)
+
   const [budget, setBudget] = useState(2500)
   const [tripLength, setTripLength] = useState(7)
   const [ecoPriority, setEcoPriority] = useState(2)
@@ -37,6 +40,27 @@ function QuestionnairePage() {
   const handleInterestToggle = (item) => {
     setInterests(prev => ({ ...prev, [item]: !prev[item] }))
   }
+
+  // On mount, see if this member already has a questionnaire in this group
+  useEffect(() => {
+    if (!member || !groupId) {
+      setChecking(false)
+      return
+    }
+    fetch(
+      `/api/groups/${groupId}/members/${member.id}/questionnaire`
+    )
+      .then(res => (res.ok ? res.json() : null))
+      .then(data => {
+        if (data && data.budget != null) {
+          // Already filled → go back to group
+          navigate(`/group?group=${groupId}`, { replace: true })
+        } else {
+          setChecking(false)
+        }
+      })
+      .catch(() => setChecking(false))
+  }, [member, groupId, navigate])
 
   const handleSubmit = async () => {
     if (!member || !groupId) {
@@ -53,19 +77,23 @@ function QuestionnairePage() {
     }
 
     try {
-      const response = await fetch(`/api/groups/${groupId}/members/${member.id}/questionnaire`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
+      const response = await fetch(
+        `/api/groups/${groupId}/members/${member.id}/questionnaire`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        }
+      )
       if (!response.ok) throw new Error('Failed to save questionnaire')
-      alert('¡Cuestionario guardado! Continúa para ver tus resultados.')
-      navigate(`/group?group=${groupId}`)
+      alert('¡Cuestionario guardado! Ahora te llevamos a tus resultados.')
+      navigate(`/group?group=${groupId}`, { replace: true })
     } catch (err) {
       alert(`Error: ${err.message}`)
     }
   }
 
+  // If there's no member or groupId at all, show an error
   if (!member || !groupId) {
     return (
       <div style={{ color: COLORS.text, textAlign: 'center', padding: '24px' }}>
@@ -73,6 +101,15 @@ function QuestionnairePage() {
         <Link to="/" style={{ color: COLORS.active, textDecoration: 'none' }}>
           ← Back to all trips
         </Link>
+      </div>
+    )
+  }
+
+  // If we're still checking for an existing questionnaire, show a loader
+  if (checking) {
+    return (
+      <div style={{ color: COLORS.text, textAlign: 'center', padding: '24px' }}>
+        <p>Cargando cuestionario…</p>
       </div>
     )
   }
@@ -98,63 +135,28 @@ function QuestionnairePage() {
           max-width: 500px;
           width: 100%;
         }
-        .card h2 {
-          margin-top: 0;
-          margin-bottom: 16px;
-          font-size: 1.5rem;
-        }
-        .field {
-          margin-bottom: 24px;
-        }
-        .field label {
-          display: block;
-          margin-bottom: 8px;
-          font-weight: bold;
-        }
-        .slider {
-          width: 100%;
-        }
-        .value-label {
-          margin-top: 4px;
-          font-size: 0.9rem;
-        }
-        .interest-container {
-          display: flex;
-          flex-wrap: wrap;
-          margin-top: 8px;
-        }
+        .card h2 { margin: 0 0 16px; font-size: 1.5rem; }
+        .field { margin-bottom: 24px; }
+        .field label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .slider { width: 100%; }
+        .value-label { margin-top: 4px; font-size: 0.9rem; }
+        .interest-container { display: flex; flex-wrap: wrap; margin-top: 8px; }
         .interest-chip {
-          margin: 4px;
-          padding: 6px 12px;
-          border: 1px solid ${COLORS.text};
-          border-radius: 16px;
-          cursor: pointer;
-          user-select: none;
-          transition: background-color 0.2s, border-color 0.2s;
-          font-size: 0.9rem;
+          margin: 4px; padding: 6px 12px; border: 1px solid ${COLORS.text};
+          border-radius: 16px; cursor: pointer; user-select: none;
+          transition: background-color 0.2s, border-color 0.2s; font-size: 0.9rem;
           white-space: nowrap;
         }
-        .interest-chip:hover {
-          background-color: ${COLORS.hover};
-          border-color: ${COLORS.hover};
-        }
+        .interest-chip:hover { background-color: ${COLORS.hover}; border-color: ${COLORS.hover}; }
         .interest-chip.selected {
-          background-color: ${COLORS.active};
-          border-color: ${COLORS.active};
+          background-color: ${COLORS.active}; border-color: ${COLORS.active};
         }
         .btn-primary {
-          padding: 10px 20px;
-          border: none;
-          border-radius: 4px;
-          background-color: ${COLORS.active};
-          color: ${COLORS.text};
-          cursor: pointer;
-          font-size: 16px;
-          transition: background-color 0.2s;
+          padding: 10px 20px; border: none; border-radius: 4px;
+          background-color: ${COLORS.active}; color: ${COLORS.text};
+          cursor: pointer; font-size: 16px; transition: background-color 0.2s;
         }
-        .btn-primary:hover {
-          background-color: ${COLORS.hover};
-        }
+        .btn-primary:hover { background-color: ${COLORS.hover}; }
       ` }} />
 
       <div className="card">
@@ -163,13 +165,8 @@ function QuestionnairePage() {
         <div className="field">
           <label htmlFor="budget">Presupuesto (€):</label>
           <input
-            id="budget"
-            type="range"
-            min="0"
-            max="5000"
-            step="50"
-            className="slider"
-            value={budget}
+            id="budget" type="range" min="0" max="5000" step="50"
+            className="slider" value={budget}
             onChange={e => setBudget(Number(e.target.value))}
           />
           <div className="value-label">€ {budget}</div>
@@ -178,13 +175,8 @@ function QuestionnairePage() {
         <div className="field">
           <label htmlFor="tripLength">Duración del viaje (días):</label>
           <input
-            id="tripLength"
-            type="range"
-            min="1"
-            max="30"
-            step="1"
-            className="slider"
-            value={tripLength}
+            id="tripLength" type="range" min="1" max="30" step="1"
+            className="slider" value={tripLength}
             onChange={e => setTripLength(Number(e.target.value))}
           />
           <div className="value-label">{tripLength} días</div>
@@ -193,13 +185,8 @@ function QuestionnairePage() {
         <div className="field">
           <label htmlFor="ecoPriority">Prioridad ecológica:</label>
           <input
-            id="ecoPriority"
-            type="range"
-            min="1"
-            max="3"
-            step="1"
-            className="slider"
-            value={ecoPriority}
+            id="ecoPriority" type="range" min="1" max="3" step="1"
+            className="slider" value={ecoPriority}
             onChange={e => setEcoPriority(Number(e.target.value))}
           />
           <div className="value-label">

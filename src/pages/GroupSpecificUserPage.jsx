@@ -10,10 +10,11 @@ const COLORS = {
 
 export default function GroupSpecificUserPage() {
   const [searchParams] = useSearchParams()
-  const groupId = searchParams.get('group')
+  const groupId  = searchParams.get('group')
   const memberId = searchParams.get('member')
+
   const [memberName, setMemberName] = useState('')
-  const [error, setError] = useState(null)
+  const [error, setError]       = useState(null)
 
   useEffect(() => {
     if (!groupId || !memberId) {
@@ -21,23 +22,23 @@ export default function GroupSpecificUserPage() {
       return
     }
     fetch(`/api/groups/${groupId}`)
-      .then(res => {
-        if (!res.ok) throw new Error(res.statusText)
-        return res.json()
+      .then(r => {
+        if (!r.ok) throw new Error(r.statusText)
+        return r.json()
       })
-      .then(groupData => {
-        const member = groupData.members.find(m => m.id === memberId)
-        if (!member) throw new Error('Member not found.')
-        setMemberName(member.name)
+      .then(data => {
+        const m = data.members.find(x => x.id === memberId)
+        if (!m) throw new Error('Member not found.')
+        setMemberName(m.name)
       })
-      .catch(err => setError(err.message))
+      .catch(e => setError(e.message))
   }, [groupId, memberId])
 
   if (error) {
     return (
-      <div style={{ backgroundColor: COLORS.pageBg, minHeight: '100vh', color: 'red', textAlign: 'center', padding: '2rem' }}>
-        <p>Error: {error}</p>
-        <Link to={`/group?group=${groupId}`} style={{ color: COLORS.accent, textDecoration: 'none' }}>
+      <div style={pageStyles.wrapper}>
+        <p style={{ color: 'red' }}>Error: {error}</p>
+        <Link to={`/group?group=${groupId}`} style={pageStyles.backLink}>
           ← Back to group
         </Link>
       </div>
@@ -46,19 +47,31 @@ export default function GroupSpecificUserPage() {
 
   if (!memberName) {
     return (
-      <div style={{ backgroundColor: COLORS.pageBg, minHeight: '100vh', color: COLORS.text, textAlign: 'center', padding: '2rem' }}>
-        Loading member…
+      <div style={pageStyles.wrapper}>
+        <p>Loading member…</p>
       </div>
     )
   }
 
   return (
-    <div style={{ backgroundColor: COLORS.pageBg, minHeight: '100vh', color: COLORS.text, textAlign: 'center', padding: '2rem' }}>
-      <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Member Details</h2>
-      <p style={{ fontSize: '1.2rem' }}>Name: {memberName}</p>
-      <Link to={`/group?group=${groupId}`} style={{ color: COLORS.accent, textDecoration: 'none', marginTop: '1rem', display: 'inline-block' }}>
+    <div style={pageStyles.wrapper}>
+      <h2>Details for {memberName}</h2>
+      {/* TODO: render any per-user stats here */}
+      <Link to={`/group?group=${groupId}`} style={pageStyles.backLink}>
         ← Back to group
       </Link>
     </div>
   )
+}
+
+const pageStyles = {
+  wrapper:  {
+    background: COLORS.pageBg, minHeight: '100vh',
+    color: COLORS.text, display: 'flex',
+    flexDirection: 'column', alignItems: 'center',
+    justifyContent: 'center', padding: 24,
+  },
+  backLink: {
+    marginTop: 16, color: COLORS.accent, textDecoration: 'none'
+  },
 }

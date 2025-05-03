@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react'
 import { Routes, Route, Link, Navigate } from 'react-router-dom'
 import LandingPage from './pages/LandingPage.jsx'
@@ -41,12 +40,14 @@ function TestPage() {
 export default function App() {
   return (
     <div className="App">
-      <nav style={{ padding: '1rem', background: '#05203C', color: '#FFF', display: 'flex', gap: '1rem' }}>
-        <Link to="/" style={{ color: '#FFF', textDecoration: 'none' }}>All Groups</Link>
-        <Link to="/create-group" style={{ color: '#FFF', textDecoration: 'none' }}>Create Group</Link>
-        <Link to="/questionario" style={{ color: '#FFF', textDecoration: 'none' }}>Cuestionario</Link>
-        <Link to="/explorar" style={{ color: '#FFF', textDecoration: 'none' }}>Explorar</Link>
-        <Link to="/test" style={{ color: '#FFF', textDecoration: 'none' }}>Test API</Link>
+      {/* Nav now only has "Create Group" */}
+      <nav style={{ padding: '1rem', background: '#05203C' }}>
+        <Link
+          to="/create-group"
+          style={{ color: '#FFF', textDecoration: 'none' }}
+        >
+          Create Group
+        </Link>
       </nav>
 
       <Routes>
