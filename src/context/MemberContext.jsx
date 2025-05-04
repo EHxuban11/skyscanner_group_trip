@@ -1,31 +1,39 @@
-// src/Context/MemberContext.jsx
+// src/context/MemberContext.jsx
 import React, { createContext, useState, useEffect } from 'react'
 
-export const MemberContext = createContext()
+export const MemberContext = createContext({
+  member: undefined,
+  setMember: () => {},
+  logout: () => {}
+})
 
 export function MemberProvider({ children }) {
-  const [member, setMember] = useState(null)
+  // undefined = loading, null = no user, {…} = somebody logged in
+  const [member, setMember] = useState(undefined)
 
+  // 1️⃣ On mount, load any saved member from localStorage
   useEffect(() => {
-    const stored = localStorage.getItem('currentMember')
-    if (stored) {
-      const parsed = JSON.parse(stored)
-      setMember(parsed)
-      console.log('Loaded member from localStorage:', parsed)
+    const saved = localStorage.getItem('member')
+    if (saved) {
+      setMember(JSON.parse(saved))
+    } else {
+      setMember(null)
     }
   }, [])
 
+  // 2️⃣ Whenever `member` changes, persist or clear localStorage
   useEffect(() => {
     if (member) {
-      localStorage.setItem('currentMember', JSON.stringify(member))
-      console.log('Saved member to localStorage:', member)
+      localStorage.setItem('member', JSON.stringify(member))
+    } else {
+      localStorage.removeItem('member')
     }
   }, [member])
 
+  // 3️⃣ logout() clears both context *and* localStorage
   const logout = () => {
     setMember(null)
-    localStorage.removeItem('currentMember')
-    console.log('Logged out: member cleared from localStorage')
+    // localStorage is already cleared by the effect above when member → null
   }
 
   return (
