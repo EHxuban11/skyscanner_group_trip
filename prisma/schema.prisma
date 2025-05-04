@@ -24,6 +24,7 @@ model Member {
   groupId        String
   questionnaires Questionnaire[]
   votes          Vote[]
+  uestionsGeneratedAnimation Boolean @default(false)
 }
 
 model Questionnaire {

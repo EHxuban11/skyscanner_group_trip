@@ -24,6 +24,7 @@ export default function LandingPage() {
   const [loadingGroups, setLoadingGroups] = useState(false)
   const [errorGroups, setErrorGroups]   = useState(null)
 
+  // Fetch users if not logged in
   useEffect(() => {
     if (!member) {
       setLoadingUsers(true)
@@ -35,6 +36,7 @@ export default function LandingPage() {
     }
   }, [member])
 
+  // Fetch groups once logged in
   useEffect(() => {
     if (member) {
       setLoadingGroups(true)
@@ -46,51 +48,47 @@ export default function LandingPage() {
     }
   }, [member])
 
+  // Not logged in: show login or create prompt
   if (!member) {
     if (loadingUsers) return <div style={styles.loading}>Loading users…</div>
     if (errorUsers)  return <div style={styles.error}>Error: {errorUsers}</div>
 
-    if (users.length === 0) {
-      return (
-        <div style={styles.page}>
-          <div style={styles.container}>
-            <button
-              style={styles.plusButton}
-              onClick={() => navigate('/create-group')}
-            >＋</button>
-          </div>
-        </div>
-      )
-    }
-
     return (
       <div style={styles.page}>
         <div style={styles.container}>
-          <h2 style={styles.title}>Who’s logging in?</h2>
-          <ul style={styles.list}>
-            {users.map(u => (
-              <li key={u.id} style={styles.listItem}>
-                <button
-                  style={styles.loginButton}
-                  onClick={() => setMember(u)}
-                >
-                  {u.name}
-                </button>
-              </li>
-            ))}
-          </ul>
-          <button
-            style={styles.plusButton}
-            onClick={() => navigate('/create-group')}
-          >＋</button>
+          {users.length > 0 ? (
+            <>
+              <h2 style={styles.title}>Who’s logging in?</h2>
+              <ul style={styles.list}>
+                {users.map(u => (
+                  <li key={u.id} style={styles.listItem}>
+                    <button
+                      style={styles.loginButton}
+                      onClick={() => setMember(u)}
+                    >
+                      {u.name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <h2 style={styles.title}>Welcome! Create a group to invite your friends.</h2>
+          )}
         </div>
+        <button
+          style={styles.plusButton}
+          onClick={() => navigate('/create-group')}
+        >＋</button>
       </div>
     )
   }
 
+  // Logged in but loading/failure
   if (loadingGroups) return <div style={styles.loading}>Loading groups…</div>
   if (errorGroups)  return <div style={styles.error}>Error: {errorGroups}</div>
 
+  // Logged in: show group cards
   return (
     <div style={styles.page}>
       <div style={styles.container}>
@@ -117,11 +115,11 @@ export default function LandingPage() {
             </div>
           ))}
         </div>
-        <button
-          style={styles.plusButton}
-          onClick={() => navigate('/create-group')}
-        >＋</button>
       </div>
+      <button
+        style={styles.plusButton}
+        onClick={() => navigate('/create-group')}
+      >＋</button>
     </div>
   )
 }
@@ -132,18 +130,18 @@ const styles = {
     minHeight: '100vh',
     color: COLORS.text,
     fontFamily: 'Arial, sans-serif',
+    position: 'relative',
   },
   container: {
     maxWidth: '600px',
     margin: '0 auto',
     padding: '16px',
-    position: 'relative',
+    textAlign: 'center',
   },
   title: {
     marginBottom: '16px',
     fontSize: '1.5rem',
     fontWeight: 'bold',
-    textAlign: 'center',
   },
   list: {
     listStyle: 'none',
@@ -198,16 +196,34 @@ const styles = {
     cursor: 'pointer',
     transition: 'background-color 0.2s',
   },
-  cardLeft: { display: 'flex', alignItems: 'center' },
-  cardRight: { display: 'flex', alignItems: 'center' },
-  icon: { marginRight: '12px', fontSize: '1.5rem' },
-  groupName: { fontSize: '1rem', fontWeight: '500' },
-  count: { marginRight: '8px', opacity: 0.75 },
-  arrow: { fontSize: '1.2rem' },
+  cardLeft: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  cardRight: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  icon: {
+    marginRight: '12px',
+    fontSize: '1.5rem',
+  },
+  groupName: {
+    fontSize: '1rem',
+    fontWeight: '500',
+  },
+  count: {
+    marginRight: '8px',
+    opacity: 0.75,
+  },
+  arrow: {
+    fontSize: '1.2rem',
+  },
   plusButton: {
-    position: 'absolute',
-    bottom: '16px',
-    right: '16px',
+    position: 'fixed',
+    bottom: '24px',
+    left: '50%',
+    transform: 'translateX(-50%)',
     width: '56px',
     height: '56px',
     borderRadius: '50%',
@@ -218,6 +234,7 @@ const styles = {
     cursor: 'pointer',
     boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
     lineHeight: 0.9,
+    zIndex: 1000,
   },
   loading: {
     padding: '24px',

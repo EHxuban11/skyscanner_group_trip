@@ -1,501 +1,354 @@
-// src/pages/GroupPage.jsx
+import React, { useState, useEffect, useContext } from 'react';
+import { useSearchParams, Link, Navigate, useLocation } from 'react-router-dom';
+import Confetti from 'react-confetti';
+import { MemberContext } from '../context/MemberContext';
+import RankingCardComponent from '../components/RankingCardComponent.jsx';
 
-import React, { useState, useEffect, useContext } from 'react'
-import {
-  useSearchParams,
-  Link,
-  Navigate,
-  useLocation,
-} from 'react-router-dom'
-import Confetti from 'react-confetti'
-import { MemberContext } from '../context/MemberContext'
-import RankingCardComponent from '../components/RankingCardComponent.jsx'
+const GroupPage = () => {
+  const [searchParams] = useSearchParams();
+  const groupId = searchParams.get('group');
+  const { member, setMember } = useContext(MemberContext);
+  const location = useLocation();
 
-const COLORS = {
-  pageBg:  '#05203C',
-  cardBg:  '#1F2937',
-  text:    '#FFF',
-  accent:  '#0362E3',
-  statsBg: '#133B5C',
-}
+  const [state, setState] = useState({
+    group: null,
+    responses: [],
+    rounds: [],
+    round: null,
+    roundVotes: [],
+    loading: true,
+    error: null,
+    winner: null,
+    showConfetti: false,
+    confettiTimeout: false,
+  });
 
-export default function GroupPage() {
-  const [searchParams]        = useSearchParams()
-  const groupId               = searchParams.get('group')
-  const { member, setMember } = useContext(MemberContext)
-  const location              = useLocation()
+  const { group, responses, rounds, round, roundVotes, loading, error, winner, showConfetti, confettiTimeout } = state;
 
-  const [group, setGroup]           = useState(null)
-  const [responses, setResponses]   = useState([])
-  const [rounds, setRounds]         = useState([])
-  const [round, setRound]           = useState(null)
-  const [roundVotes, setRoundVotes] = useState([])
-  const [loading, setLoading]       = useState(true)
-  const [error, setError]           = useState(null)
-  const [winner, setWinner]         = useState(null)
+  const PLACES = [
+    'París, Francia',
+    'Barcelona, España',
+    'Roma, Italia',
+    'Tokio, Japón',
+    'Nueva York, EE.UU.',
+  ];
 
+  const totalMembers = group?.members?.length || 0;
+  const completedCount = responses.length;
+  const allDone = totalMembers > 0 && completedCount === totalMembers;
+
+  // Fetch group and questionnaire data with real-time polling
   useEffect(() => {
     if (!groupId) {
-      setError('No group ID provided.')
-      setLoading(false)
-      return
+      setState(prev => ({ ...prev, error: 'No group ID provided.', loading: false }));
+      return;
     }
 
-    fetch(`/api/groups/${groupId}`)
-      .then(r => {
-        if (!r.ok) throw new Error(r.statusText)
-        return r.json()
-      })
-      .then(data => {
-        setGroup(data)
-        return Promise.all(
-          data.members.map(m =>
-            fetch(
-              `/api/groups/${groupId}/members/${m.id}/questionnaire`
-            )
-              .then(r => {
-                if (r.status === 204) return null
-                if (!r.ok) {
-                  console.warn(
-                    `Warning: questionnaire ${m.id} status ${r.status}`
-                  )
-                  return null
-                }
-                return r.json()
-              })
-              .catch(() => null)
-          )
-        )
-      })
-      .then(resps => {
-        setResponses(resps.filter(r => r && r.budget != null))
-      })
-      .catch(e => setError(e.message))
-      .finally(() => setLoading(false))
-  }, [groupId])
+    const fetchGroupData = async () => {
+      try {
+        const groupRes = await fetch(`/api/groups/${groupId}`);
+        if (!groupRes.ok) throw new Error(groupRes.statusText);
+        const groupData = await groupRes.json();
+        
+        const respPromises = groupData.members.map(async (m) => {
+          try {
+            const resp = await fetch(`/api/groups/${groupId}/members/${m.id}/questionnaire`);
+            if (resp.status === 204) return null;
+            if (!resp.ok) {
+              console.warn(`Warning: questionnaire ${m.id} status ${resp.status}`);
+              return null;
+            }
+            return resp.json();
+          } catch {
+            return null;
+          }
+        });
 
-  const totalMembers   = group?.members.length || 0
-  const completedCount = responses.length
-  const allDone        = totalMembers > 0 && completedCount === totalMembers
+        const resps = await Promise.all(respPromises);
+        const newResponses = resps.filter(r => r && r.budget != null);
+        const isAllDone = newResponses.length === groupData.members.length;
 
+        setState(prev => ({
+          ...prev,
+          group: groupData,
+          responses: newResponses,
+          loading: false,
+          showConfetti: isAllDone ? true : prev.showConfetti,
+          confettiTimeout: isAllDone ? true : prev.confettiTimeout,
+        }));
+      } catch (e) {
+        setState(prev => ({ ...prev, error: e.message, loading: false }));
+      }
+    };
+
+    fetchGroupData(); // Initial fetch
+
+    // Poll every second
+    const intervalId = setInterval(fetchGroupData, 1000);
+
+    // Cleanup interval on unmount
+    return () => clearInterval(intervalId);
+  }, [groupId]);
+
+  // Handle confetti timeout
   useEffect(() => {
-    if (!group || !allDone) return
+    if (!allDone || !confettiTimeout) return;
 
-    fetch(`/api/groups/${group.id}/rounds`)
-      .then(r => r.json())
-      .then(all => {
-        setRounds(all)
-        const open = all.find(r => r.status === 'OPEN')
-        if (open) return open
-        return fetch(
-          `/api/groups/${group.id}/rounds`,
-          { method: 'POST' }
-        ).then(r => r.json())
-      })
-      .then(setRound)
-      .catch(console.error)
-  }, [group, allDone])
+    const timer = setTimeout(() => {
+      setState(prev => ({ ...prev, confettiTimeout: false }));
+    }, 5000); // Show confetti for 5 seconds
 
+    return () => clearTimeout(timer);
+  }, [allDone, confettiTimeout]);
+
+  // Fetch rounds and create new round if needed, only after confetti timeout
   useEffect(() => {
-    if (!round) return
-    fetch(
-      `/api/groups/${group.id}/rounds/${round.id}/votes`
-    )
-      .then(r => r.json())
-      .then(setRoundVotes)
-      .catch(() => {})
-  }, [round])
+    if (!group || !allDone || confettiTimeout) return;
 
+    const fetchRounds = async () => {
+      try {
+        const roundsRes = await fetch(`/api/groups/${group.id}/rounds`);
+        const allRounds = await roundsRes.json();
+        const openRound = allRounds.find(r => r.status === 'OPEN');
+
+        if (openRound) {
+          setState(prev => ({ ...prev, rounds: allRounds, round: openRound }));
+        } else {
+          const newRoundRes = await fetch(`/api/groups/${group.id}/rounds`, { method: 'POST' });
+          const newRound = await newRoundRes.json();
+          setState(prev => ({ ...prev, rounds: allRounds, round: newRound }));
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    fetchRounds();
+  }, [group, allDone, confettiTimeout]);
+
+  // Fetch round votes
   useEffect(() => {
-    if (!group || !roundVotes.length || winner) return
+    if (!round) return;
 
-    const PLACES = [
-      'París, Francia',
-      'Barcelona, España',
-      'Roma, Italia',
-      'Tokio, Japón',
-      'Nueva York, EE.UU.',
-    ]
+    const fetchVotes = async () => {
+      try {
+        const votesRes = await fetch(`/api/groups/${group.id}/rounds/${round.id}/votes`);
+        const votes = await votesRes.json();
+        setState(prev => ({ ...prev, roundVotes: votes }));
+      } catch {
+        // Ignore errors
+      }
+    };
 
-    for (let place of PLACES) {
+    fetchVotes();
+  }, [round]);
+
+  // Determine winner
+  useEffect(() => {
+    if (!group || !roundVotes.length || winner) return;
+
+    for (const place of PLACES) {
       const unanimous = group.members.every(m =>
-        roundVotes.some(
-          v =>
-            v.place === place &&
-            v.memberId === m.id &&
-            v.value === true
-        )
-      )
+        roundVotes.some(v => v.place === place && v.memberId === m.id && v.value === true)
+      );
       if (unanimous) {
-        setWinner(place)
-        return
+        setState(prev => ({ ...prev, winner: place }));
+        return;
       }
     }
-  }, [roundVotes, group, winner])
+  }, [roundVotes, group, winner]);
 
   const castVote = async (place, value) => {
-    if (!member || !round) return
-    const res = await fetch(
-      `/api/groups/${groupId}/rounds/${round.id}/vote`,
-      {
+    if (!member || !round) return;
+    try {
+      const res = await fetch(`/api/groups/${groupId}/rounds/${round.id}/vote`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          memberId: member.id,
-          place,
-          value,
-        }),
+        body: JSON.stringify({ memberId: member.id, place, value }),
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setState(prev => ({
+          ...prev,
+          roundVotes: prev.roundVotes
+            .filter(x => !(x.place === place && x.memberId === member.id))
+            .concat(updated),
+        }));
       }
-    )
-    if (res.ok) {
-      const updated = await res.json()
-      setRoundVotes(rv =>
-        rv
-          .filter(
-            x =>
-              !(
-                x.place === place &&
-                x.memberId === member.id
-              )
-          )
-          .concat(updated)
-      )
+    } catch (e) {
+      console.error(e);
     }
-  }
+  };
 
-  if (loading) {
-    return <div style={styles.center}>Loading…</div>
-  }
-  if (error) {
-    return (
-      <div style={styles.center}>
-        <p style={{ color: 'red' }}>Error: {error}</p>
-        <Link to="/" style={styles.backLink}>
+  const closeRound = async () => {
+    try {
+      const res = await fetch(`/api/groups/${group.id}/rounds/${round.id}/close`, { method: 'POST' });
+      const data = await res.json();
+      if (data.winner) {
+        setState(prev => ({ ...prev, winner: data.winner }));
+      } else {
+        const nextRoundRes = await fetch(`/api/groups/${group.id}/rounds`, { method: 'POST' });
+        const nextRound = await nextRoundRes.json();
+        setState(prev => ({ ...prev, round: nextRound, roundVotes: [] }));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const MemberSelection = () => (
+    <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div className="max-w-md w-full p-6 text-center">
+        <h2 className="text-2xl font-bold mb-6">{group.name}</h2>
+        <h3 className="text-lg mb-4 opacity-80">Who are you?</h3>
+        <ul className="space-y-3">
+          {group.members.map(m => (
+            <li key={m.id}>
+              <button
+                className="w-full py-2 px-4 bg-gray-700 rounded border border-gray-600 hover:bg-gray-600"
+                onClick={() => setMember({ id: m.id, name: m.name })}
+              >
+                {m.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <Link to="/" className="mt-6 inline-block text-blue-500 hover:underline">
           ← Back to all trips
         </Link>
       </div>
-    )
-  }
-  if (!member) {
-    return (
-      <div style={styles.page}>
-        <div style={styles.container}>
-          <h2 style={styles.title}>{group.name}</h2>
-          <h3 style={styles.subtitle}>Who are you?</h3>
-          <ul style={styles.memberList}>
-            {group.members.map(m => (
-              <li key={m.id} style={styles.memberItem}>
-                <button
-                  style={styles.selectBtn}
-                  onClick={() =>
-                    setMember({ id: m.id, name: m.name })
-                  }
-                >
-                  {m.name}
-                </button>
-              </li>
-            ))}
-          </ul>
-          <Link to="/" style={styles.backLink}>
-            ← Back to all trips
-          </Link>
-        </div>
+    </div>
+  );
+
+  const ProgressSection = () => (
+    <>
+      {showConfetti && <Confetti />}
+      <div className="mb-6 flex flex-col items-center">
+        <progress
+          value={completedCount}
+          max={totalMembers}
+          className="w-full h-3 mb-2"
+        />
+        <span>{completedCount} / {totalMembers} completed</span>
       </div>
-    )
+      <p className="mt-2 text-gray-400">The game will start when everybody finishes the questionnaire.</p>
+    </>
+  );
+
+  const WinnerSection = () => (
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <Confetti />
+      <div className="max-w-md w-full p-6 text-center">
+        <h1 className="text-3xl font-bold text-blue-500 mb-4">
+          🎉 Trip Chosen: {winner || round.winner} 🎉
+        </h1>
+        <p className="mb-4">
+          {round.status === 'COIN_TOSS'
+            ? `No unanimous decision by round ${round.number}, so we flipped a coin!`
+            : `All members voted yes on ${winner || round.winner}!`}
+        </p>
+        <a
+          href={`https://www.flyscanner.com/flights-to/${encodeURIComponent(winner || round.winner)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block py-3 px-6 bg-blue-600 text-white rounded font-semibold hover:bg-blue-700"
+        >
+          Buy on FlyScanner ✈️
+        </a>
+      </div>
+    </div>
+  );
+
+  const VotingSection = () => (
+    <div className="min-h-screen bg-gray-900">
+      <div className="max-w-2xl mx-auto p-6">
+        <h2 className="text-2xl font-bold text-white mb-6">
+          {group.name} — Round {round.number}
+        </h2>
+        <div className="flex flex-wrap justify-center gap-3 mb-6">
+          {group.members.map(m => (
+            <Link
+              key={m.id}
+              to={`/group/user?group=${groupId}&member=${m.id}`}
+              className="flex flex-col items-center p-3 bg-gray-800 rounded-lg min-w-[80px]"
+            >
+              <span className="text-2xl mb-1">🧑</span>
+              <span className="text-sm text-white">{m.name}</span>
+            </Link>
+          ))}
+        </div>
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold mb-3">Vote on Top 5 Places</h3>
+          {PLACES.map((place, i) => {
+            const votesForPlace = roundVotes.filter(v => v.place === place);
+            const score = votesForPlace.reduce((sum, v) => sum + (v.value ? 1 : 0), 0);
+            return (
+              <RankingCardComponent
+                key={place}
+                name={place}
+                score={score}
+                position={i + 1}
+                placeVotes={votesForPlace}
+                members={group.members}
+                currentMemberId={member.id}
+                onVote={castVote}
+              />
+            );
+          })}
+        </div>
+        <button
+          type="button"
+          onClick={closeRound}
+          className="w-full py-3 px-4 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          {round.number >= 5 ? 'Flip coin & choose!' : `Close Round ${round.number}`}
+        </button>
+        <Link to="/" className="mt-6 inline-block text-blue-500 hover:underline">
+          ← Back to all trips
+        </Link>
+      </div>
+    </div>
+  );
+
+  if (loading) {
+    return <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">Loading…</div>;
   }
 
-  const myResp = responses.find(
-    r => r.memberId === member.id
-  )
-  if (!myResp) {
+  if (error) {
     return (
-      <Navigate
-        to={`/questionario?group=${groupId}`}
-        replace
-      />
-    )
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-500 mb-4">Error: {error}</p>
+          <Link to="/" className="text-blue-500 hover:underline">← Back to all trips</Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (!member) {
+    return <MemberSelection />;
+  }
+
+  const myResp = responses.find(r => r.memberId === member.id);
+  if (!myResp) {
+    return <Navigate to={`/questionario?group=${groupId}`} replace />;
   }
 
   return (
-    <div style={styles.page}>
-      <div style={styles.container}>
-        <h2 style={styles.title}>
-          {group.name}
-        </h2>
-
-        {/* ▶️ Progress & Generate Cards (HIDE once round starts) */}
-        {!round && (
-          <>
-            <div style={styles.progressContainer}>
-              <progress
-                value={completedCount}
-                max={totalMembers}
-                style={styles.progressBar}
-              />
-              <div>
-                {completedCount} / {totalMembers} completed
-              </div>
-            </div>
-
-            <button
-              type="button"
-              disabled={!allDone}
-              onClick={() => {
-                console.log('Generate cards for group', groupId)
-              }}
-              style={{
-                ...styles.generateBtn,
-                backgroundColor: allDone ? COLORS.accent : '#666',
-                cursor: allDone ? 'pointer' : 'not-allowed',
-              }}
-            >
-              Generate Cards
-            </button>
-
-            {!allDone && (
-              <p style={styles.waitingText}>
-                Waiting for all members to finish…
-              </p>
-            )}
-          </>
-        )}
-
-        {/* ▶️ Voting / Winner UI */}
+    <div className="min-h-screen bg-gray-900 text-white">
+      <div className="max-w-2xl mx-auto p-6">
+        <h2 className="text-2xl font-bold mb-6">{group.name}</h2>
+        {!round && <ProgressSection />}
         {allDone && (
           <>
-            {!round && (
-              <div style={styles.center}>
-                Loading round…
-              </div>
-            )}
-            {round && (winner || round.winner) && (
-              <div style={styles.page}>
-                <Confetti />
-                <div style={styles.container}>
-                  <h1
-                    style={{
-                      color: COLORS.accent,
-                    }}
-                  >
-                    🎉 Trip Chosen:{' '}
-                    {winner || round.winner}{' '}
-                    🎉
-                  </h1>
-                  <p style={{ margin: '1rem 0' }}>
-                    {round.status ===
-                    'COIN_TOSS'
-                      ? `No unanimous decision by round ${round.number}, so we flipped a coin!`
-                      : `All members voted yes on ${
-                          winner || round.winner
-                        }!`}
-                  </p>
-                  <a
-                    href={`https://www.flyscanner.com/flights-to/${encodeURIComponent(
-                      winner || round.winner
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={styles.bookLink}
-                  >
-                    Buy on FlyScanner ✈️
-                  </a>
-                </div>
-              </div>
-            )}
-            {round && !winner && !round.winner && (
-              <div style={styles.page}>
-                <div style={styles.container}>
-                  <h2 style={styles.title}>
-                    {group.name} — Round {round.number}
-                  </h2>
-                  <div style={styles.headsContainer}>
-                    {group.members.map(m => {
-                      const votesForPlace = roundVotes.filter(
-                        v => v.memberId === m.id
-                      )
-                      return (
-                        <Link
-                          key={m.id}
-                          to={`/group/user?group=${groupId}&member=${m.id}`}
-                          style={styles.headLink}
-                        >
-                          <div style={styles.headBadge}>
-                            <span style={styles.headIcon}>🧑</span>
-                            <span style={styles.headName}>{m.name}</span>
-                          </div>
-                        </Link>
-                      )
-                    })}
-                  </div>
-                  <div style={styles.recommendations}>
-                    <h3 style={styles.recTitle}>Vote on Top 5 Places</h3>
-                    {[
-                      { name: 'París, Francia' },
-                      { name: 'Barcelona, España' },
-                      { name: 'Roma, Italia' },
-                      { name: 'Tokio, Japón' },
-                      { name: 'Nueva York, EE.UU.' },
-                    ].map((place, i) => {
-                      const votesForPlace = roundVotes.filter(
-                        v => v.place === place.name
-                      )
-                      const score = votesForPlace.reduce(
-                        (sum, v) => sum + (v.value ? 1 : 0),
-                        0
-                      )
-                      return (
-                        <RankingCardComponent
-                          key={place.name}
-                          name={place.name}
-                          score={score}
-                          position={i + 1}
-                          placeVotes={votesForPlace}
-                          members={group.members}
-                          currentMemberId={member.id}
-                          onVote={castVote}
-                        />
-                      )
-                    })}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={async () => {
-                      const res = await fetch(
-                        `/api/groups/${group.id}/rounds/${round.id}/close`,
-                        { method: 'POST' }
-                      )
-                      const data = await res.json()
-                      if (data.winner) {
-                        setWinner(data.winner)
-                      } else {
-                        const next = await fetch(
-                          `/api/groups/${group.id}/rounds`,
-                          { method: 'POST' }
-                        ).then(r => r.json())
-                        setRound(next)
-                        setRoundVotes([])
-                      }
-                    }}
-                    style={{
-                      marginTop: 24,
-                      padding: '12px 24px',
-                      fontSize: 16,
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {round.number >= 5
-                      ? 'Flip coin & choose!'
-                      : `Close Round ${round.number}`}
-                  </button>
-                  <Link to="/" style={styles.backLink}>
-                    ← Back to all trips
-                  </Link>
-                </div>
-              </div>
-            )}
+            {!round && <div className="text-center">Loading round…</div>}
+            {round && (winner || round.winner) && <WinnerSection />}
+            {round && !winner && !round.winner && <VotingSection />}
           </>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-const styles = {
-  page: {
-    backgroundColor: COLORS.pageBg,
-    minHeight: '100vh',
-    color: COLORS.text,
-    fontFamily: 'Arial, sans-serif',
-  },
-  container: {
-    maxWidth: 600,
-    margin: '0 auto',
-    padding: 16,
-    textAlign: 'center',
-  },
-  title: {
-    fontSize: '1.75rem',
-    marginBottom: 24,
-  },
-  subtitle: {
-    fontSize: '1.25rem',
-    marginBottom: 16,
-    opacity: 0.85,
-  },
-  center: { padding: 32, textAlign: 'center' },
-  backLink: {
-    color: COLORS.accent,
-    textDecoration: 'none',
-    marginTop: 16,
-    display: 'inline-block',
-  },
-  memberList: {
-    listStyle: 'none',
-    padding: 0,
-    marginBottom: 24,
-  },
-  memberItem: { margin: '8px 0' },
-  selectBtn: {
-    padding: '8px 16px',
-    fontSize: 16,
-    background: COLORS.cardBg,
-    border: '1px solid #444',
-    borderRadius: 4,
-    color: COLORS.text,
-    cursor: 'pointer',
-  },
-  progressContainer: {
-    marginBottom: 16,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  progressBar: {
-    width: '100%',
-    height: '12px',
-    marginBottom: 4,
-  },
-  generateBtn: {
-    padding: '12px 24px',
-    fontSize: '1rem',
-    border: 'none',
-    borderRadius: 4,
-    color: '#fff',
-    marginBottom: 24,
-  },
-  waitingText: {
-    color: '#aaa',
-    marginTop: 8,
-  },
-  headsContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    gap: 12,
-    marginBottom: 24,
-  },
-  headLink: { textDecoration: 'none' },
-  headBadge: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: 8,
-    background: COLORS.cardBg,
-    borderRadius: 8,
-    minWidth: 80,
-  },
-  headIcon: { fontSize: '1.5rem', marginBottom: 4 },
-  headName: { fontSize: '0.9rem', color: COLORS.text },
-  recommendations: { marginBottom: 24 },
-  recTitle: { marginBottom: 12 },
-  bookLink: {
-    display: 'inline-block',
-    marginTop: '1rem',
-    padding: '12px 24px',
-    backgroundColor: COLORS.accent,
-    color: '#FFF',
-    textDecoration: 'none',
-    borderRadius: 4,
-    fontWeight: 600,
-  },
-}
+export default GroupPage;

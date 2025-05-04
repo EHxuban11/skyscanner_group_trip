@@ -1,4 +1,4 @@
-// index.js
+// server/index.js
 
 const express = require('express')
 const cors = require('cors')
@@ -10,7 +10,7 @@ const prisma = new PrismaClient()
 app.use(cors())
 app.use(express.json())
 
-// Logging
+// Logging middleware
 app.use((req, res, next) => {
   if (['POST','PUT','PATCH','DELETE'].includes(req.method)) {
     console.log(`→ ${req.method} ${req.originalUrl}`, req.body)
@@ -20,7 +20,7 @@ app.use((req, res, next) => {
   next()
 })
 
-// Test
+// Test endpoint
 app.get('/api/hello', (req, res) => {
   res.json({ message: 'Hello from Node!' })
 })
@@ -28,6 +28,8 @@ app.get('/api/hello', (req, res) => {
 //
 // ─── GROUPS ────────────────────────────────────────────────────────────────────
 //
+
+// List groups, optionally filtering by memberId
 app.get('/api/groups', async (req, res, next) => {
   const { memberId } = req.query
   try {
@@ -45,6 +47,7 @@ app.get('/api/groups', async (req, res, next) => {
   }
 })
 
+// Create a new group with initial members
 app.post('/api/groups', async (req, res, next) => {
   const { groupName, members } = req.body
   if (!groupName || !Array.isArray(members) || members.length === 0) {
@@ -67,6 +70,7 @@ app.post('/api/groups', async (req, res, next) => {
   }
 })
 
+// Get a single group by ID
 app.get('/api/groups/:id', async (req, res, next) => {
   const { id } = req.params
   try {
@@ -81,6 +85,7 @@ app.get('/api/groups/:id', async (req, res, next) => {
   }
 })
 
+// Rename a group
 app.put('/api/groups/:id', async (req, res) => {
   const { id } = req.params
   const { name } = req.body
@@ -101,6 +106,8 @@ app.put('/api/groups/:id', async (req, res) => {
 //
 // ─── MEMBERS ───────────────────────────────────────────────────────────────────
 //
+
+// Add a member to a group
 app.post('/api/groups/:id/members', async (req, res) => {
   const { id } = req.params
   const { name } = req.body
@@ -116,14 +123,25 @@ app.post('/api/groups/:id/members', async (req, res) => {
   }
 })
 
+// Update member name or animation‐seen flag
 app.patch('/api/groups/:groupId/members/:memberId', async (req, res) => {
   const { memberId } = req.params
-  const { name } = req.body
-  if (!name) return res.status(400).json({ error: 'Member name is required' })
+  const { name, questionsGeneratedAnimation } = req.body
+
+  const data = {}
+  if (name != null) data.name = name
+  if (questionsGeneratedAnimation != null) {
+    data.questionsGeneratedAnimation = questionsGeneratedAnimation
+  }
+
+  if (Object.keys(data).length === 0) {
+    return res.status(400).json({ error: 'Nothing to update' })
+  }
+
   try {
     const updated = await prisma.member.update({
       where: { id: memberId },
-      data: { name },
+      data,
     })
     res.json(updated)
   } catch (err) {
@@ -132,6 +150,7 @@ app.patch('/api/groups/:groupId/members/:memberId', async (req, res) => {
   }
 })
 
+// Remove a member
 app.delete('/api/groups/:groupId/members/:memberId', async (req, res) => {
   const { memberId } = req.params
   try {
@@ -146,6 +165,8 @@ app.delete('/api/groups/:groupId/members/:memberId', async (req, res) => {
 //
 // ─── USERS ─────────────────────────────────────────────────────────────────────
 //
+
+// List all users (members across all groups)
 app.get('/api/users', async (req, res, next) => {
   try {
     const users = await prisma.member.findMany({ orderBy: { name: 'asc' } })
@@ -158,6 +179,8 @@ app.get('/api/users', async (req, res, next) => {
 //
 // ─── QUESTIONNAIRE ─────────────────────────────────────────────────────────────
 //
+
+// Submit a questionnaire
 app.post(
   '/api/groups/:groupId/members/:memberId/questionnaire',
   async (req, res) => {
@@ -166,7 +189,6 @@ app.post(
       budget,
       tripLength,
       deckResponses,
-      // hacemos opcionales ecoPriority e interests
       ecoPriority = 0,
       interests   = [],
     } = req.body
@@ -201,6 +223,7 @@ app.post(
   }
 )
 
+// Fetch a questionnaire (returns 204 if not exists)
 app.get(
   '/api/groups/:groupId/members/:memberId/questionnaire',
   async (req, res) => {
@@ -210,7 +233,6 @@ app.get(
         where: { groupId, memberId },
       })
       if (!questionnaire) {
-        // Si no existe aún, devolvemos 204 No Content
         return res.sendStatus(204)
       }
       res.json(questionnaire)
@@ -224,6 +246,8 @@ app.get(
 //
 // ─── VOTING ROUNDS & VOTES ─────────────────────────────────────────────────────
 //
+
+// List all rounds for a group
 app.get('/api/groups/:groupId/rounds', async (req, res, next) => {
   const { groupId } = req.params
   try {
@@ -237,6 +261,7 @@ app.get('/api/groups/:groupId/rounds', async (req, res, next) => {
   }
 })
 
+// Start a new round
 app.post('/api/groups/:groupId/rounds', async (req, res, next) => {
   const { groupId } = req.params
   try {
@@ -254,6 +279,7 @@ app.post('/api/groups/:groupId/rounds', async (req, res, next) => {
   }
 })
 
+// List votes for a round
 app.get(
   '/api/groups/:groupId/rounds/:roundId/votes',
   async (req, res, next) => {
@@ -267,6 +293,7 @@ app.get(
   }
 )
 
+// Cast or update a vote
 app.post(
   '/api/groups/:groupId/rounds/:roundId/vote',
   async (req, res, next) => {
@@ -275,7 +302,7 @@ app.post(
     if (!memberId || !place || typeof value !== 'boolean') {
       return res
         .status(400)
-        .json({ error: 'memberId, place (string), and value (boolean) are required' })
+        .json({ error: 'memberId, place, and value are required' })
     }
     try {
       const vote = await prisma.vote.upsert({
@@ -290,6 +317,7 @@ app.post(
   }
 )
 
+// Close a round
 app.post(
   '/api/groups/:groupId/rounds/:roundId/close',
   async (req, res, next) => {
@@ -301,14 +329,17 @@ app.post(
       })
       if (!round) return res.status(404).json({ error: 'Round not found' })
 
+      // Gather distinct places
       const places = Array.from(new Set(round.votes.map(v => v.place)))
       let winner = null
 
+      // Check unanimous yes
       for (let p of places) {
-        const unanimous = round.group.members.every(m =>
-          round.votes.some(v => v.place === p && v.memberId === m.id && v.value)
-        )
-        if (unanimous) {
+        if (
+          round.group.members.every(m =>
+            round.votes.some(v => v.place === p && v.memberId === m.id && v.value)
+          )
+        ) {
           winner = p
           break
         }
@@ -337,7 +368,7 @@ app.post(
   }
 )
 
-// Error handler & start
+// Global error handler
 app.use((err, req, res, next) => {
   console.error(err)
   res.status(500).json({ error: 'Internal Server Error' })
