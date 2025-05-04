@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Skyscanner Group trip
 
 Coloring: 
@@ -40,3 +41,4 @@ To deploy the project on Vercel, run:
 vercel --prod
 ```
 *Note: You’ll need the Vercel CLI installed and an active Vercel account login.*
+>>>>>>> 4f8729e45acdfbf6871883b37b7e8a578b43c29e

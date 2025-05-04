@@ -1,26 +1,49 @@
-# Logs
-logs
-*.log
+# Python
+__pycache__/
+*.py[cod]
+*.egg
+*.egg-info/
+dist/
+build/
+.env
+.venv/
+env/
+interpreter/
+*.sqlite3
+
+# Node
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# React
+food-gallery/build/
+food-gallery/.env
+food-gallery/node_modules/
 
-# Editor directories and files
-.vscode/*
+# Logs
+logs
+*.log
+
+# VS Code
+.vscode/
 !.vscode/extensions.json
-.idea
+
+# PyCharm
+.idea/
+
+# System files
 .DS_Store
+
+# Misc IDE
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
 
+# Vercel
 .vercel
