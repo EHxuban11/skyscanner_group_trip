@@ -1,0 +1,1202 @@
+[
+    {
+        "entityId": "104120218",
+        "parentId": "222383696",
+        "name": "Menorca",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "MAH",
+        "coordinates": {
+            "latitude": 39.861389,
+            "longitude": 4.215278
+        },
+        "categories": ["beach", "sunny", "seafood", "city life", "cultural", "relaxing/spa", "minimal tourism", "clean air"]
+    },
+    {
+        "entityId": "104120220",
+        "parentId": "27539774",
+        "name": "Halim Perdana Kusuma",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "HLP",
+        "coordinates": {
+            "latitude": -6.268056,
+            "longitude": 106.890278
+        },
+        "categories": ["tropical", "city life", "street food", "humid", "cultural", "public transport friendly", "vegetarian"]
+    },
+    {
+        "entityId": "104120221",
+        "parentId": "27539818",
+        "name": "Chongqing",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "CKG",
+        "coordinates": {
+            "latitude": 29.719167,
+            "longitude": 106.641667
+        },
+        "categories": ["humid", "city life", "street food", "temperate", "cultural", "local", "public transport friendly", "renewable energy"]
+    },
+    {
+        "entityId": "104120222",
+        "parentId": "27539681",
+        "name": "Cairo",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "CAI",
+        "coordinates": {
+            "latitude": 30.1128361,
+            "longitude": 31.3997046
+        },
+        "categories": ["dry", "cultural", "middle eastern", "city life", "museums", "halal", "public transport friendly", "vegetarian"]
+    },
+    {
+        "entityId": "104120223",
+        "parentId": "27546274",
+        "name": "Santiago Arturo Merino Benitez",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "SCL",
+        "coordinates": {
+            "latitude": -33.39298,
+            "longitude": -70.7858
+        },
+        "categories": ["temperate", "city life", "wine & cheese", "mountain", "cultural", "public transport friendly", "green hotels", "clean air"]
+    },
+    {
+        "entityId": "104120224",
+        "parentId": "39828399",
+        "name": "Zanzibar",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "ZNZ",
+        "coordinates": {
+            "latitude": -6.219167,
+            "longitude": 39.221944
+        },
+        "categories": ["tropical", "beach", "seafood", "minimal tourism", "cultural", "adventure", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120225",
+        "parentId": "27542908",
+        "name": "Itami Domestic (Osaka)",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "ITM",
+        "coordinates": {
+            "latitude": 34.781667,
+            "longitude": 135.441667
+        },
+        "categories": ["temperate", "city life", "japanese", "public transport friendly", "cultural", "vegan", "low carbon footprint", "zero-waste cities"]
+    },
+    {
+        "entityId": "104120226",
+        "parentId": "27536381",
+        "name": "Nanaimo",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "YCD",
+        "coordinates": {
+            "latitude": 49.05,
+            "longitude": -123.866667
+        },
+        "categories": ["temperate", "remote/nature", "seafood", "clean air", "adventure", "public transport friendly", "access to nature reserves", "eco-lodges"]
+    },
+    {
+        "entityId": "104120227",
+        "parentId": "27536440",
+        "name": "Atlantic City International",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "ACY",
+        "coordinates": {
+            "latitude": 39.45,
+            "longitude": -74.583333
+        },
+        "categories": ["temperate", "party", "city life", "seafood", "cultural", "public transport friendly", "vegetarian"]
+    },
+    {
+        "entityId": "104120228",
+        "parentId": "27547225",
+        "name": "Antananarivo",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "TNR",
+        "coordinates": {
+            "latitude": -18.8,
+            "longitude": 47.483333
+        },
+        "categories": ["tropical", "remote/nature", "adventure", "minimal tourism", "cultural", "local", "eco-lodges", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120229",
+        "parentId": "27548253",
+        "name": "Baotou",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "BAV",
+        "coordinates": {
+            "latitude": 40.666667,
+            "longitude": 109.983333
+        },
+        "categories": ["continental", "dry", "city life", "local", "cultural", "renewable energy", "clean air"]
+    },
+    {
+        "entityId": "104120230",
+        "parentId": "27539477",
+        "name": "Stockholm Bromma",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "BMA",
+        "coordinates": {
+            "latitude": 59.352778,
+            "longitude": 17.946389
+        },
+        "categories": ["continental", "city life", "museums", "public transport friendly", "vegan", "clean air", "low carbon footprint", "zero-waste cities"]
+    },
+    {
+        "entityId": "104120231",
+        "parentId": "27536452",
+        "name": "Adelaide",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "ADL",
+        "coordinates": {
+            "latitude": -34.948333,
+            "longitude": 138.534722
+        },
+        "categories": ["temperate", "city life", "wine & cheese", "clean air", "cultural", "public transport friendly", "vegetarian", "green hotels"]
+    },
+    {
+        "entityId": "104120232",
+        "parentId": "27548327",
+        "name": "East Midlands",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "EMA",
+        "coordinates": {
+            "latitude": 52.829374,
+            "longitude": -1.3321769
+        },
+        "categories": ["temperate", "city life", "public transport friendly", "local", "cultural", "green hotels", "clean air"]
+    },
+    {
+        "entityId": "104120233",
+        "parentId": "27544892",
+        "name": "Mendoza",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "MDZ",
+        "coordinates": {
+            "latitude": -32.831944,
+            "longitude": -68.784722
+        },
+        "categories": ["temperate", "mountain", "wine & cheese", "adventure", "cultural", "local", "clean air", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120234",
+        "parentId": "27544877",
+        "name": "Muscat",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "MCT",
+        "coordinates": {
+            "latitude": 23.591667,
+            "longitude": 58.279167
+        },
+        "categories": ["dry", "cultural", "middle eastern", "city life", "halal", "seafood", "public transport friendly", "clean air"]
+    },
+    {
+        "entityId": "104120235",
+        "parentId": "27544040",
+        "name": "Lome",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "LFW",
+        "coordinates": {
+            "latitude": 6.1625,
+            "longitude": 1.254167
+        },
+        "categories": ["tropical", "cultural", "city life", "local", "street food", "minimal tourism", "vegetarian"]
+    },
+    {
+        "entityId": "104120237",
+        "parentId": "27541852",
+        "name": "Glasgow Intl",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "GLA",
+        "coordinates": {
+            "latitude": 55.866667,
+            "longitude": -4.433333
+        },
+        "categories": ["temperate", "city life", "cultural", "public transport friendly", "museums", "vegan", "low carbon footprint", "clean air"]
+    },
+    {
+        "entityId": "104120238",
+        "parentId": "34235660",
+        "name": "Karlsruhe / Baden-Baden",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "FKB",
+        "coordinates": {
+            "latitude": 48.7792,
+            "longitude": 8.0803
+        },
+        "categories": ["temperate", "cultural", "wine & cheese", "green hotels", "public transport friendly", "local", "clean air"]
+    },
+    {
+        "entityId": "104120239",
+        "parentId": "27540804",
+        "name": "Zhangjiajie Hehua",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "DYG",
+        "coordinates": {
+            "latitude": 29.103883,
+            "longitude": 110.444108
+        },
+        "categories": ["temperate", "remote/nature", "adventure", "local", "cultural", "access to nature reserves", "eco-lodges"]
+    },
+    {
+        "entityId": "104120240",
+        "parentId": "222252936",
+        "name": "Humberside",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "HUY",
+        "coordinates": {
+            "latitude": 53.583333,
+            "longitude": -0.35
+        },
+        "categories": ["temperate", "city life", "local", "clean air", "cultural", "public transport friendly", "vegetarian"]
+    },
+    {
+        "entityId": "104120241",
+        "parentId": "27541669",
+        "name": "Fort Lauderdale International",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "FLL",
+        "coordinates": {
+            "latitude": 26.074167,
+            "longitude": -80.151667
+        },
+        "categories": ["tropical", "beach", "TRACKED_VALUEparty", "seafood", "city life", "vegan", "public transport friendly"]
+    },
+    {
+        "entityId": "104120242",
+        "parentId": "27546187",
+        "name": "Rimini",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "RMI",
+        "coordinates": {
+            "latitude": 44.020833,
+            "longitude": 12.612222
+        },
+        "categories": ["temperate", "beach", "italian", "party", "cultural", "seafood", "public transport friendly", "vegetarian"]
+    },
+    {
+        "entityId": "104120243",
+        "parentId": "27536345",
+        "name": "Halifax International",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "YHZ",
+        "coordinates": {
+            "latitude": 44.883333,
+            "longitude": -63.516667
+        },
+        "categories": ["continental", "city life", "seafood", "cultural", "public transport friendly", "clean air", "vegan"]
+    },
+    {
+        "entityId": "104120244",
+        "parentId": "27548470",
+        "name": "Tunxi",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "TXN",
+        "coordinates": {
+            "latitude": 29.733333,
+            "longitude": 118.3
+        },
+        "categories": ["temperate", "remote/nature", "cultural", "local", "adventure", "access to nature reserves", "eco-lodges"]
+    },
+    {
+        "entityId": "104120245",
+        "parentId": "45552482",
+        "name": "Redang",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "RDN",
+        "coordinates": {
+            "latitude": 5.765278,
+            "longitude": 103.006944
+        },
+        "categories": ["tropical", "beach", "seafood", "minimal tourism", "relaxing/spa", "adventure", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120246",
+        "parentId": "32020255",
+        "name": "Shirahama",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "SHM",
+        "coordinates": {
+            "latitude": 33.661389,
+            "longitude": 135.358056
+        },
+        "categories": ["temperate", "beach", "japanese", "relaxing/spa", "cultural", "seafood", "public transport friendly", "clean air"]
+    },
+    {
+        "entityId": "104120247",
+        "parentId": "27543810",
+        "name": "Kosice",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "KSC",
+        "coordinates": {
+            "latitude": 48.666667,
+            "longitude": 21.25
+        },
+        "categories": ["continental", "city life", "cultural", "local", "public transport friendly", "clean air", "vegetarian"]
+    },
+    {
+        "entityId": "104120249",
+        "parentId": "222457355",
+        "name": "Guernsey",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "GCI",
+        "coordinates": {
+            "latitude": 49.436111,
+            "longitude": -2.602778
+        },
+        "categories": ["temperate", "remote/nature", "seafood", "minimal tourism", "cultural", "clean air", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120251",
+        "parentId": "31485497",
+        "name": "Dali City",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "DLU",
+        "coordinates": {
+            "latitude": 25.666667,
+            "longitude": 100.316667
+        },
+        "categories": ["temperate", "remote/nature", "cultural", "adventure", "local", "access to nature reserves", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120252",
+        "parentId": "27541922",
+        "name": "Grand Rapids",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "GRR",
+        "coordinates": {
+            "latitude": 42.881111,
+            "longitude": -85.524167
+        },
+        "categories": ["continental", "city life", "local", "clean air", "cultural", "public transport friendly", "vegetarian"]
+    },
+    {
+        "entityId": "104120253",
+        "parentId": "27551146",
+        "name": "Port Blair",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "IXZ",
+        "coordinates": {
+            "latitude": 11.648333,
+            "longitude": 92.743611
+        },
+        "categories": ["tropical", "beach", "indian", "minimal tourism", "seafood", "adventure", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120254",
+        "parentId": "27538755",
+        "name": "Bridgetown",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "BGI",
+        "coordinates": {
+            "latitude": 13.072222,
+            "longitude": -59.493056
+        },
+        "categories": ["tropical", "beach", "seafood", "party", "cultural", "relaxing/spa", "minimal tourism", "clean air"]
+    },
+    {
+        "entityId": "104120255",
+        "parentId": "33922188",
+        "name": "Sharm El Sheikh",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "SSH",
+        "coordinates": {
+            "latitude": 27.977222,
+            "longitude": 34.395
+        },
+        "categories": ["dry", "beach", "adventure", "seafood", "cultural", "relaxing/spa", "minimal tourism", "clean air"]
+    },
+    {
+        "entityId": "104120258",
+        "parentId": "27544958",
+        "name": "Velana International",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "MLE",
+        "coordinates": {
+            "latitude": 4.201389,
+            "longitude": 73.524444
+        },
+        "categories": ["tropical", "beach", "seafood", "relaxing/spa", "minimal tourism", "cultural", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120259",
+        "parentId": "27541724",
+        "name": "Fort Smith",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "FSM",
+        "coordinates": {
+            "latitude": 35.336111,
+            "longitude": -94.37
+        },
+        "categories": ["temperate", "city life", "local", "clean air", "cultural", "public transport friendly", "vegetarian"]
+    },
+    {
+        "entityId": "104120260",
+        "parentId": "27547175",
+        "name": "Tachilek",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "THL",
+        "coordinates": {
+            "latitude": 20.45,
+            "longitude": 99.95
+        },
+        "categories": ["tropical", "remote/nature", "cultural", "minimal tourism", "local", "adventure", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120261",
+        "parentId": "222601913",
+        "name": "Kos",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "KGS",
+        "coordinates": {
+            "latitude": 36.793056,
+            "longitude": 27.095278
+        },
+        "categories": ["sunny", "beach", "cultural", "seafood", "party", "relaxing/spa", "minimal tourism", "clean air"]
+    },
+    {
+        "entityId": "104120262",
+        "parentId": "27546203",
+        "name": "Rockhampton",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "ROK",
+        "coordinates": {
+            "latitude": -23.377222,
+            "longitude": 150.475
+        },
+        "categories": ["tropical", "city life", "adventure", "local", "cultural", "clean air", "public transport friendly"]
+    },
+    {
+        "entityId": "104120263",
+        "parentId": "46674533",
+        "name": "John A. Osborne",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "MNI",
+        "coordinates": {
+            "latitude": 16.793263401835656,
+            "longitude": -62.19383949564369
+        },
+        "categories": ["tropical", "remote/nature", "minimal tourism", "seafood", "cultural", "beach", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120264",
+        "parentId": "27546162",
+        "name": "Rhodes",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "RHO",
+        "coordinates": {
+            "latitude": 36.406501,
+            "longitude": 28.08629
+        },
+        "categories": ["sunny", "beach", "cultural", "seafood", "party", "museums", "minimal tourism", "clean air"]
+    },
+    {
+        "entityId": "104120265",
+        "parentId": "27545033",
+        "name": "Maun",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "MUB",
+        "coordinates": {
+            "latitude": -19.970833,
+            "longitude": 23.430556
+        },
+        "categories": ["dry", "adventure", "remote/nature", "minimal tourism", "cultural", "access to nature reserves", "eco-lodges"]
+    },
+    {
+        "entityId": "104120266",
+        "parentId": "27536390",
+        "name": "Apia Faleolo",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "APW",
+        "coordinates": {
+            "latitude": -13.833333,
+            "longitude": -172
+        },
+        "categories": ["tropical", "beach", "seafood", "minimal tourism", "cultural", "relaxing/spa", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120267",
+        "parentId": "27548187",
+        "name": "Watertown",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "ATY",
+        "coordinates": {
+            "latitude": 44.908889,
+            "longitude": -97.154167
+        },
+        "categories": ["continental", "remote/nature", "local", "clean air", "cultural", "public transport friendly", "vegetarian"]
+    },
+    {
+        "entityId": "104120273",
+        "parentId": "27536398",
+        "name": " Dawson Creek",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "YDQ",
+        "coordinates": {
+            "latitude": 55.733333,
+            "longitude": -120.183333
+        },
+        "categories": ["continental", "remote/nature", "adventure", "clean air", "local", "access to nature reserves", "eco-lodges"]
+    },
+    {
+        "entityId": "104120274",
+        "parentId": "39865512",
+        "name": "Owen Roberts International",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "GCM",
+        "coordinates": {
+            "latitude": 19.2925,
+            "longitude": -81.358056
+        },
+        "categories": ["tropical", "beach", "seafood", "relaxing/spa", "cultural", "minimal tourism", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120275",
+        "parentId": "27545979",
+        "name": "Pellston",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "PLN",
+        "coordinates": {
+            "latitude": 45.570833,
+            "longitude": -84.792778
+        },
+        "categories": ["continental", "remote/nature", "adventure", "clean air", "local", "access to nature reserves", "eco-lodges"]
+    },
+    {
+        "entityId": "104120279",
+        "parentId": "27546264",
+        "name": "Salisbury-Ocean City",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "SBY",
+        "coordinates": {
+            "latitude": 38.338611,
+            "longitude": -75.51
+        },
+        "categories": ["temperate", "beach", "seafood", "city life", "cultural", "public transport friendly", "vegetarian"]
+    },
+    {
+        "entityId": "104120280",
+        "parentId": "27544927",
+        "name": "Mariehamn",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "MHQ",
+        "coordinates": {
+            "latitude": 60.123333,
+            "longitude": 19.896667
+        },
+        "categories": ["continental", "remote/nature", "seafood", "minimal tourism", "cultural", "clean air", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120282",
+        "parentId": "27543983",
+        "name": "Liberal",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "LBL",
+        "coordinates": {
+            "latitude": 37.044444,
+            "longitude": -100.960556
+        },
+        "categories": ["continental", "dry", "local", "clean air", "cultural", "public transport friendly", "vegetarian"]
+    },
+    {
+        "entityId": "104120283",
+        "parentId": "27537522",
+        "name": "Queenstown",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "ZQN",
+        "coordinates": {
+            "latitude": -45.021389,
+            "longitude": 168.738889
+        },
+        "categories": ["temperate", "mountain", "adventure", "clean air", "cultural", "access to nature reserves", "eco-lodges"]
+    },
+    {
+        "entityId": "104120284",
+        "parentId": "27542710",
+        "name": "Harrison",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "HRO",
+        "coordinates": {
+            "latitude": 36.261667,
+            "longitude": -93.155556
+        },
+        "categories": ["temperate", "remote/nature", "local", "clean air", "cultural", "adventure", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120285",
+        "parentId": "27543068",
+        "name": "Kajaani",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "KAJ",
+        "coordinates": {
+            "latitude": 64.277778,
+            "longitude": 27.688889
+        },
+        "categories": ["continental", "remote/nature", "snowy", "clean air", "cultural", "access to nature reserves", "eco-lodges"]
+    },
+    {
+        "entityId": "104120286",
+        "parentId": "27544064",
+        "name": "Lihue",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "LIH",
+        "coordinates": {
+            "latitude": 21.979167,
+            "longitude": -159.345833
+        },
+        "categories": ["tropical", "beach", "seafood", "relaxing/spa", "cultural", "adventure", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120288",
+        "parentId": "27547284",
+        "name": "Traverse City",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "TVC",
+        "coordinates": {
+            "latitude": 44.74,
+            "longitude": -85.585833
+        },
+        "categories": ["continental", "remote/nature", "seafood", "clean air", "cultural", "adventure", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120291",
+        "parentId": "35236780",
+        "name": "Key West International",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "EYW",
+        "coordinates": {
+            "latitude": 24.556111,
+            "longitude": -81.759722
+        },
+        "categories": ["tropical", "beach", "seafood", "party", "cultural", "relaxing/spa", "minimal tourism", "clean air"]
+    },
+    {
+        "entityId": "104120295",
+        "parentId": "27539498",
+        "name": "Ballina",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "BNK",
+        "coordinates": {
+            "latitude": -28.833333,
+            "longitude": 153.55
+        },
+        "categories": ["tropical", "beach", "seafood", "relaxing/spa", "cultural", "clean air", "public transport friendly"]
+    },
+    {
+        "entityId": "104120297",
+        "parentId": "27546027",
+        "name": "Papeete",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "PPT",
+        "coordinates": {
+            "latitude": -17.55375,
+            "longitude": -149.60724
+        },
+        "categories": ["tropical", "beach", "seafood", "minimal tourism", "cultural", "relaxing/spa", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120299",
+        "parentId": "27538762",
+        "name": "Bangor",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "BGR",
+        "coordinates": {
+            "latitude": 44.807778,
+            "longitude": -68.827778
+        },
+        "categories": ["continental", "remote/nature", "seafood", "clean air", "cultural", "adventure", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120300",
+        "parentId": "27538770",
+        "name": "Bar Harbor",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "BHB",
+        "coordinates": {
+            "latitude": 44.448889,
+            "longitude": -68.361667
+        },
+        "categories": ["continental", "remote/nature", "seafood", "clean air", "cultural", "adventure", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120301",
+        "parentId": "27542020",
+        "name": "Hayden",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "HDN",
+        "coordinates": {
+            "latitude": 40.482471,
+            "longitude": -107.221756
+        },
+        "categories": ["continental", "mountain", "adventure", "snowy", "cultural", "clean air", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120302",
+        "parentId": "35284339",
+        "name": "Vail Eagle County",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "EGE",
+        "coordinates": {
+            "latitude": 39.642446,
+            "longitude": -106.919975
+        },
+        "categories": ["continental", "mountain", "adventure", "snowy", "cultural", "clean air", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120303",
+        "parentId": "27545204",
+        "name": "Maui Kahului",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "OGG",
+        "coordinates": {
+            "latitude": 20.900556,
+            "longitude": -156.433611
+        },
+        "categories": ["tropical", "beach", "seafood", "relaxing/spa", "cultural", "adventure", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120305",
+        "parentId": "27536213",
+        "name": "Wick",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "WIC",
+        "coordinates": {
+            "latitude": 58.456944,
+            "longitude": -3.086667
+        },
+        "categories": ["continental", "remote/nature", "cultural", "clean air", "minimal tourism", "seafood", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120306",
+        "parentId": "27548151",
+        "name": "Aspen",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "ASE",
+        "coordinates": {
+            "latitude": 39.224275,
+            "longitude": -106.86985
+        },
+        "categories": ["continental", "mountain", "adventure", "snowy", "cultural", "relaxing/spa", "clean air", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120307",
+        "parentId": "27546230",
+        "name": "Rovaniemi",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "RVN",
+        "coordinates": {
+            "latitude": 66.563056,
+            "longitude": 25.826667
+        },
+        "categories": ["polar", "snowy", "adventure", "cultural", "clean air", "remote/nature", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120308",
+        "parentId": "27547352",
+        "name": "Busuanga",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "USU",
+        "coordinates": {
+            "latitude": 12.1,
+            "longitude": 120.166667
+        },
+        "categories": ["tropical", "beach", "seafood", "minimal tourism", "cultural", "adventure", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120309",
+        "parentId": "27540753",
+        "name": "Duluth International",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "DLH",
+        "coordinates": {
+            "latitude": 46.8425,
+            "longitude": -92.190278
+        },
+        "categories": ["continental", "remote/nature", "snowy", "clean air", "cultural", "adventure", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120311",
+        "parentId": "35799781",
+        "name": "Iron Mountain",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "IMT",
+        "coordinates": {
+            "latitude": 45.815556,
+            "longitude": -88.114167
+        },
+        "categories": ["continental", "remote/nature", "snowy", "clean air", "cultural", "adventure", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120312",
+        "parentId": "27545943",
+        "name": "Page",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "PGA",
+        "coordinates": {
+            "latitude": 36.926389,
+            "longitude": -111.447222
+        },
+        "categories": ["dry", "adventure", "remote/nature", "cultural", "clean air", "access to nature reserves", "eco-lodges"]
+    },
+    {
+        "entityId": "104120313",
+        "parentId": "27543859",
+        "name": "Kristianstad",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "KID",
+        "coordinates": {
+            "latitude": 55.919444,
+            "longitude": 14.088889
+        },
+        "categories": ["continental", "city life", "cultural", "clean air", "public transport friendly", "local", "vegetarian"]
+    },
+    {
+        "entityId": "104120314",
+        "parentId": "31479364",
+        "name": "St Maarten",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "SXM",
+        "coordinates": {
+            "latitude": 18.043611,
+            "longitude": -63.111944
+        },
+        "categories": ["tropical", "beach", "seafood", "party", "cultural", "relaxing/spa", "minimal tourism", "clean air"]
+    },
+    {
+        "entityId": "104120315",
+        "parentId": "27548217",
+        "name": "The Valley",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "AXA",
+        "coordinates": {
+            "latitude": 18.20483,
+            "longitude": -63.05508
+        },
+        "categories": ["tropical", "beach", "seafood", "minimal tourism", "cultural", "relaxing/spa", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120317",
+        "parentId": "222576130",
+        "name": "F.D. Roosevelt",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "EUX",
+        "coordinates": {
+            "latitude": 17.493056,
+            "longitude": -62.977778
+        },
+        "categories": ["tropical", "beach", "seafood", "minimal tourism", "cultural", "relaxing/spa", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120318",
+        "parentId": "27546240",
+        "name": "Saba Island",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "SAB",
+        "coordinates": {
+            "latitude": 17.65,
+            "longitude": -63.216667
+        },
+        "categories": ["tropical", "beach", "seafood", "minimal tourism", "cultural", "adventure", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120319",
+        "parentId": "39840242",
+        "name": "Terrance B. Lettsome International",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "EIS",
+        "coordinates": {
+            "latitude": 18.443889,
+            "longitude": -64.542778
+        },
+        "categories": ["tropical", "beach", "seafood", "minimal tourism", "cultural", "relaxing/spa", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120320",
+        "parentId": "39840249",
+        "name": "Virgin Gorda",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "VIJ",
+        "coordinates": {
+            "latitude": 18.445456,
+            "longitude": -64.428077
+        },
+        "categories": ["tropical", "beach", "seafood", "minimal tourism", "cultural", "relaxing/spa", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120321",
+        "parentId": "222576426",
+        "name": "Henry E. Rohlsen",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "STX",
+        "coordinates": {
+            "latitude": 17.701944,
+            "longitude": -64.798611
+        },
+        "categories": ["tropical", "beach", "seafood", "minimal tourism", "cultural", "relaxing/spa", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120322",
+        "parentId": "27539426",
+        "name": "Bemidji",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "BJI",
+        "coordinates": {
+            "latitude": 47.509722,
+            "longitude": -94.934722
+        },
+        "categories": ["continental", "remote/nature", "adventure", "clean air", "cultural", "access to nature reserves", "eco-lodges"]
+    },
+    {
+        "entityId": "104120324",
+        "parentId": "27547163",
+        "name": "Telluride",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "TEX",
+        "coordinates": {
+            "latitude": 37.953132,
+            "longitude": -107.909088
+        },
+        "categories": ["continental", "mountain", "adventure", "snowy", "cultural", "clean air", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120325",
+        "parentId": "27542746",
+        "name": "Huatulco",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "HUX",
+        "coordinates": {
+            "latitude": 15.768333,
+            "longitude": -96.235556
+        },
+        "categories": ["tropical", "beach", "seafood", "relaxing/spa", "cultural", "adventure", "eco-lodges", "clean air"]
+    },
+    {
+        "entityId": "104120326",
+        "parentId": "275rp41945",
+        "name": "Gunnison",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "GUC",
+        "coordinates": {
+            "latitude": 38.532859,
+            "longitude": -106.939888
+        },
+        "categories": ["continental", "mountain", "adventure", "snowy", "cultural", "clean air", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120327",
+        "parentId": "27541729",
+        "name": "El Calafate",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "FTE",
+        "coordinates": {
+            "latitude": -50.280278,
+            "longitude": -72.053333
+        },
+        "categories": ["continental", "remote/nature", "adventure", "cultural", "clean air", "access to nature reserves", "eco-lodges"]
+    },
+    {
+        "entityId": "104120328",
+        "parentId": "27547384",
+        "name": "Vernal",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "VEL",
+        "coordinates": {
+            "latitude": 40.438847,
+            "longitude": -109.511032
+        },
+        "categories": ["continental", "remote/nature", "adventure", "clean air", "cultural", "access to nature reserves", "eco-lodges"]
+    },
+    {
+        "entityId": "104120329",
+        "parentId": "27545002",
+        "name": "Marquette",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "MQT",
+        "coordinates": {
+            "latitude": 46.534167,
+            "longitude": -87.558333
+        },
+        "categories": ["continental", "remote/nature", "snowy", "clean air", "cultural", "adventure", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120330",
+        "parentId": "27537394",
+        "name": "Timmins",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "YTS",
+        "coordinates": {
+            "latitude": 48.566667,
+            "longitude": -81.366667
+        },
+        "categories": ["continental", "remote/nature", "snowy", "clean air", "cultural", "adventure", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120331",
+        "parentId": "38304360",
+        "name": "Mykonos",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "JMK",
+        "coordinates": {
+            "latitude": 37.436111,
+            "longitude": 25.344444
+        },
+        "categories": ["sunny", "beach", "cultural", "seafood", "party", "relaxing/spa", "minimal tourism", "clean air"]
+    },
+    {
+        "entityId": "104120332",
+        "parentId": "27545294",
+        "name": "Paros",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "PAS",
+        "coordinates": {
+            "latitude": 37.010161,
+            "longitude": 25.128137
+        },
+        "categories": ["sunny", "beach", "cultural", "seafood", "relaxing/spa", "minimal tourism", "clean air", "eco-lodges"]
+    },
+    {
+        "entityId": "104120333",
+        "parentId": "27544964",
+        "name": "Milos",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "MLO",
+        "coordinates": {
+            "latitude": 36.696744,
+            "longitude": 24.476531
+        },
+        "categories": ["sunny", "beach", "cultural", "seafood", "relaxing/spa", "minimal tourism", "clean air", "eco-lodges"]
+    },
+    {
+        "entityId": "104120335",
+        "parentId": "27539594",
+        "name": "Butte",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "BTM",
+        "coordinates": {
+            "latitude": 45.951111,
+            "longitude": -112.493889
+        },
+        "categories": ["continental", "remote/nature", "adventure", "clean air", "cultural", "access to nature reserves", "eco-lodges"]
+    },
+    {
+        "entityId": "104120337",
+        "parentId": "27536201",
+        "name": "Ketchikan International",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "KTN",
+        "coordinates": {
+            "latitude": 55.355843,
+            "longitude": -131.712084
+        },
+        "categories": ["temperate", "remote/nature", "seafood", "adventure", "cultural", "clean air", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120338",
+        "parentId": "27539857",
+        "name": "Hancock",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "CMX",
+        "coordinates": {
+            "latitude": 47.167778,
+            "longitude": -88.486389
+        },
+        "categories": ["continental", "remote/nature", "snowy", "clean air", "cultural", "adventure", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120340",
+        "parentId": "27544206",
+        "name": "Lewiston-Nez Perce County",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "LWS",
+        "coordinates": {
+            "latitude": 46.3728,
+            "longitude": -117.0168
+        },
+        "categories": ["temperate", "remote/nature", "adventure", "clean air", "cultural", "access to nature reserves", "eco-lodges"]
+    },
+    {
+        "entityId": "104120341",
+        "parentId": "27542915",
+        "name": "Ivalo",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "IVL",
+        "coordinates": {
+            "latitude": 68.611111,
+            "longitude": 27.415556
+        },
+        "categories": ["polar", "snowy", "adventure", "cultural", "clean air", "remote/nature", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120343",
+        "parentId": "27540620",
+        "name": "Clovis Municipal",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "CVN",
+        "coordinates": {
+            "latitude": 34.427302,
+            "longitude": -103.079224
+        },
+        "categories": ["continental", "dry", "local", "clean air", "cultural", "public transport friendly", "vegetarian"]
+    },
+    {
+        "entityId": "104120344",
+        "parentId": "27536378",
+        "name": "Deer Lake",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "YDF",
+        "coordinates": {
+            "latitude": 49.216667,
+            "longitude": -57.4
+        },
+        "categories": ["continental", "remote/nature", "adventure", "clean air", "cultural", "access to nature reserves", "eco-lodges"]
+    },
+    {
+        "entityId": "104120345",
+        "parentId": "27543001",
+        "name": "Jamestown",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "JMS",
+        "coordinates": {
+            "latitude": 46.93,
+            "longitude": -98.678333
+        },
+        "categories": ["continental", "remote/nature", "local", "clean air", "cultural", "public transport friendly", "vegetarian"]
+    },
+    {
+        "entityId": "104120346",
+        "parentId": "27536166",
+        "name": "Iqaluit",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "YFB",
+        "coordinates": {
+            "latitude": 63.752222,
+            "longitude": -68.563889
+        },
+        "categories": ["polar", "remote/nature", "adventure", "cultural", "clean air", "minimal tourism", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120347",
+        "parentId": "27543913",
+        "name": "Kittilä",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "KTT",
+        "coordinates": {
+            "latitude": 67.701,
+            "longitude": 24.8469
+        },
+        "categories": ["polar", "snowy", "adventure", "cultural", "clean air", "remote/nature", "access to nature reserves"]
+    },
+    {
+        "entityId": "104120348",
+        "parentId": "27541778",
+        "name": "Garden City",
+        "type": "PLACE_TYPE_AIRPORT",
+        "iata": "GCK",
+        "coordinates": {
+            "latitude": 37.928611,
+            "longitude": -100.729722
+        },
+        "categories": ["continental", "dry", "local", "clean air", "cultural", "public transport friendly", "vegetarian"]
+    }
+]

@@ -1,3 +1,5 @@
+// index.js
+
 const express = require('express')
 const cors = require('cors')
 const { PrismaClient } = require('@prisma/client')
@@ -163,21 +165,20 @@ app.post(
     const {
       budget,
       tripLength,
-      ecoPriority,
-      interests,
-      deckResponses, // newly added
+      deckResponses,
+      // hacemos opcionales ecoPriority e interests
+      ecoPriority = 0,
+      interests   = [],
     } = req.body
 
     if (
       budget == null ||
       tripLength == null ||
-      ecoPriority == null ||
-      !Array.isArray(interests) ||
       typeof deckResponses !== 'object'
     ) {
       return res
         .status(400)
-        .json({ error: 'budget, tripLength, ecoPriority, interests, deckResponses are required' })
+        .json({ error: 'budget, tripLength and deckResponses are required' })
     }
 
     try {
@@ -208,7 +209,11 @@ app.get(
       const questionnaire = await prisma.questionnaire.findFirst({
         where: { groupId, memberId },
       })
-      res.json(questionnaire || null)
+      if (!questionnaire) {
+        // Si no existe aún, devolvemos 204 No Content
+        return res.sendStatus(204)
+      }
+      res.json(questionnaire)
     } catch (err) {
       console.error(err)
       res.status(500).json({ error: 'Failed to fetch questionnaire' })
