@@ -4,6 +4,9 @@ def load_destinations(file_path):
     with open(file_path, "r", encoding="utf-8") as file:
         return json.load(file)
 
+def load_user_preferences(file_path):
+    with open(file_path, "r", encoding="utf-8") as file:
+        return json.load(file)
 def recommend_destinations(user_preferences, destinations, top_n=10):
     scored_destinations = []
 
@@ -26,10 +29,7 @@ def save_recommendations(recommendations, file_path):
 
 if __name__ == "__main__":
     # Example user preferences (replace with dynamic input later)
-    user_preferences = [
-        "beach", "sunny", "vegan", "cultural", "eco-lodges", "street food"
-    ]
-
+    user_preferences = load_user_preferences("user_preferences.json")
     destinations = load_destinations("destinations.json")
     top_recommendations = recommend_destinations(user_preferences, destinations, top_n=10)
     save_recommendations(top_recommendations, "recommended_destinations.json")

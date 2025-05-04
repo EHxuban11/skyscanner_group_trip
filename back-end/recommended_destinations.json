@@ -1,46 +1,12 @@
 [
     {
-        "name": "Kos",
-        "iata": "KGS",
-        "categories": [
-            "sunny",
-            "beach",
-            "cultural",
-            "eco-lodges",
-            "vegan"
-        ]
-    },
-    {
-        "name": "Rhodes",
-        "iata": "RHO",
-        "categories": [
-            "sunny",
-            "beach",
-            "cultural",
-            "eco-lodges",
-            "vegan"
-        ]
-    },
-    {
-        "name": "Mykonos",
-        "iata": "JMK",
-        "categories": [
-            "sunny",
-            "beach",
-            "cultural",
-            "eco-lodges",
-            "vegan"
-        ]
-    },
-    {
         "name": "Paros",
         "iata": "PAS",
         "categories": [
             "sunny",
             "beach",
             "cultural",
-            "eco-lodges",
-            "vegan"
+            "eco-lodges"
         ]
     },
     {
@@ -50,8 +16,7 @@
             "sunny",
             "beach",
             "cultural",
-            "eco-lodges",
-            "vegan"
+            "eco-lodges"
         ]
     },
     {
@@ -60,28 +25,16 @@
         "categories": [
             "beach",
             "sunny",
+            "cultural"
+        ]
+    },
+    {
+        "name": "Zanzibar",
+        "iata": "ZNZ",
+        "categories": [
+            "beach",
             "cultural",
             "eco-lodges"
-        ]
-    },
-    {
-        "name": "Bridgetown",
-        "iata": "BGI",
-        "categories": [
-            "beach",
-            "cultural",
-            "eco-lodges",
-            "vegan"
-        ]
-    },
-    {
-        "name": "Sharm El Sheikh",
-        "iata": "SSH",
-        "categories": [
-            "beach",
-            "cultural",
-            "eco-lodges",
-            "vegan"
         ]
     },
     {
@@ -90,8 +43,16 @@
         "categories": [
             "beach",
             "cultural",
-            "eco-lodges",
-            "vegan"
+            "eco-lodges"
+        ]
+    },
+    {
+        "name": "Kos",
+        "iata": "KGS",
+        "categories": [
+            "sunny",
+            "beach",
+            "cultural"
         ]
     },
     {
@@ -100,8 +61,34 @@
         "categories": [
             "cultural",
             "beach",
-            "eco-lodges",
-            "vegan"
+            "eco-lodges"
+        ]
+    },
+    {
+        "name": "Rhodes",
+        "iata": "RHO",
+        "categories": [
+            "sunny",
+            "beach",
+            "cultural"
+        ]
+    },
+    {
+        "name": "Apia Faleolo",
+        "iata": "APW",
+        "categories": [
+            "beach",
+            "cultural",
+            "eco-lodges"
+        ]
+    },
+    {
+        "name": "Owen Roberts International",
+        "iata": "GCM",
+        "categories": [
+            "beach",
+            "cultural",
+            "eco-lodges"
         ]
     }
 ]
