@@ -27,6 +27,9 @@ npm install
 # back to root
 cd ..
 
+#ELIMINAR Y REGENERAR BDD:
+npx prisma migrate dev
+
 # run first migration (SQLite dev.db)
 npx prisma migrate dev --name init
 

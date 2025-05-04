@@ -40,15 +40,7 @@ function TestPage() {
 export default function App() {
   return (
     <div className="App">
-      {/* Nav now only has "Create Group" */}
-      <nav style={{ padding: '1rem', background: '#05203C' }}>
-        <Link
-          to="/create-group"
-          style={{ color: '#FFF', textDecoration: 'none' }}
-        >
-          Create Group
-        </Link>
-      </nav>
+      
 
       <Routes>
         <Route path="/" element={<LandingPage />} />

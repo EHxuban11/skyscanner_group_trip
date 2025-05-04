@@ -34,7 +34,6 @@ export default function GroupPage() {
   const [error, setError]           = useState(null)
   const [winner, setWinner]         = useState(null)
 
-  // 1️⃣ Load group & questionnaires
   useEffect(() => {
     if (!groupId) {
       setError('No group ID provided.')
@@ -75,12 +74,10 @@ export default function GroupPage() {
       .finally(() => setLoading(false))
   }, [groupId])
 
-  // ▶️ Progress calculation
   const totalMembers   = group?.members.length || 0
   const completedCount = responses.length
   const allDone        = totalMembers > 0 && completedCount === totalMembers
 
-  // 2️⃣ Once all done, fetch or start round
   useEffect(() => {
     if (!group || !allDone) return
 
@@ -99,7 +96,6 @@ export default function GroupPage() {
       .catch(console.error)
   }, [group, allDone])
 
-  // 3️⃣ Load votes for this round
   useEffect(() => {
     if (!round) return
     fetch(
@@ -110,7 +106,6 @@ export default function GroupPage() {
       .catch(() => {})
   }, [round])
 
-  // 3.1️⃣ Auto-detect unanimous winner
   useEffect(() => {
     if (!group || !roundVotes.length || winner) return
 
@@ -138,7 +133,6 @@ export default function GroupPage() {
     }
   }, [roundVotes, group, winner])
 
-  // 4️⃣ Cast a vote
   const castVote = async (place, value) => {
     if (!member || !round) return
     const res = await fetch(
@@ -169,7 +163,6 @@ export default function GroupPage() {
     }
   }
 
-  // 5️⃣ Loading / error / picking member / redirect
   if (loading) {
     return <div style={styles.center}>Loading…</div>
   }
@@ -210,6 +203,7 @@ export default function GroupPage() {
       </div>
     )
   }
+
   const myResp = responses.find(
     r => r.memberId === member.id
   )
@@ -222,7 +216,6 @@ export default function GroupPage() {
     )
   }
 
-  // 6️⃣ Main UI
   return (
     <div style={styles.page}>
       <div style={styles.container}>
@@ -230,45 +223,41 @@ export default function GroupPage() {
           {group.name}
         </h2>
 
-        {/* ▶️ Progress & Generate Cards */}
-        <div style={styles.progressContainer}>
-          <progress
-            value={completedCount}
-            max={totalMembers}
-            style={styles.progressBar}
-          />
-          <div>
-            {completedCount} / {totalMembers}{' '}
-            completed
-          </div>
-        </div>
+        {/* ▶️ Progress & Generate Cards (HIDE once round starts) */}
+        {!round && (
+          <>
+            <div style={styles.progressContainer}>
+              <progress
+                value={completedCount}
+                max={totalMembers}
+                style={styles.progressBar}
+              />
+              <div>
+                {completedCount} / {totalMembers} completed
+              </div>
+            </div>
 
-        <button
-          type="button"
-          disabled={!allDone}
-          onClick={() => {
-            console.log(
-              'Generate cards for group',
-              groupId
-            )
-            // aquí lanza tu lógica real
-          }}
-          style={{
-            ...styles.generateBtn,
-            backgroundColor: allDone
-              ? COLORS.accent
-              : '#666',
-            cursor: allDone
-              ? 'pointer'
-              : 'not-allowed',
-          }}
-        >
-          Generate Cards
-        </button>
-        {!allDone && (
-          <p style={styles.waitingText}>
-            Waiting for all members to finish…
-          </p>
+            <button
+              type="button"
+              disabled={!allDone}
+              onClick={() => {
+                console.log('Generate cards for group', groupId)
+              }}
+              style={{
+                ...styles.generateBtn,
+                backgroundColor: allDone ? COLORS.accent : '#666',
+                cursor: allDone ? 'pointer' : 'not-allowed',
+              }}
+            >
+              Generate Cards
+            </button>
+
+            {!allDone && (
+              <p style={styles.waitingText}>
+                Waiting for all members to finish…
+              </p>
+            )}
+          </>
         )}
 
         {/* ▶️ Voting / Winner UI */}
@@ -317,8 +306,7 @@ export default function GroupPage() {
               <div style={styles.page}>
                 <div style={styles.container}>
                   <h2 style={styles.title}>
-                    {group.name} — Round{' '}
-                    {round.number}
+                    {group.name} — Round {round.number}
                   </h2>
                   <div style={styles.headsContainer}>
                     {group.members.map(m => {
@@ -332,25 +320,15 @@ export default function GroupPage() {
                           style={styles.headLink}
                         >
                           <div style={styles.headBadge}>
-                            <span
-                              style={styles.headIcon}
-                            >
-                              🧑
-                            </span>
-                            <span
-                              style={styles.headName}
-                            >
-                              {m.name}
-                            </span>
+                            <span style={styles.headIcon}>🧑</span>
+                            <span style={styles.headName}>{m.name}</span>
                           </div>
                         </Link>
                       )
                     })}
                   </div>
                   <div style={styles.recommendations}>
-                    <h3 style={styles.recTitle}>
-                      Vote on Top 5 Places
-                    </h3>
+                    <h3 style={styles.recTitle}>Vote on Top 5 Places</h3>
                     {[
                       { name: 'París, Francia' },
                       { name: 'Barcelona, España' },
@@ -361,12 +339,10 @@ export default function GroupPage() {
                       const votesForPlace = roundVotes.filter(
                         v => v.place === place.name
                       )
-                      const score =
-                        votesForPlace.reduce(
-                          (sum, v) =>
-                            sum + (v.value ? 1 : 0),
-                          0
-                        )
+                      const score = votesForPlace.reduce(
+                        (sum, v) => sum + (v.value ? 1 : 0),
+                        0
+                      )
                       return (
                         <RankingCardComponent
                           key={place.name}
@@ -411,10 +387,7 @@ export default function GroupPage() {
                       ? 'Flip coin & choose!'
                       : `Close Round ${round.number}`}
                   </button>
-                  <Link
-                    to="/"
-                    style={styles.backLink}
-                  >
+                  <Link to="/" style={styles.backLink}>
                     ← Back to all trips
                   </Link>
                 </div>

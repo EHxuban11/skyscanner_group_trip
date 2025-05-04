@@ -1,7 +1,7 @@
 // src/pages/LandingPage.jsx
 
 import React, { useState, useEffect, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { MemberContext } from '../context/MemberContext'
 
 const COLORS = {
@@ -14,51 +14,54 @@ const COLORS = {
 
 export default function LandingPage() {
   const { member, setMember, logout } = useContext(MemberContext)
+  const navigate = useNavigate()
 
-  // — Login state —
-  const [users, setUsers] = useState([])
+  const [users, setUsers]               = useState([])
   const [loadingUsers, setLoadingUsers] = useState(false)
-  const [errorUsers, setErrorUsers] = useState(null)
+  const [errorUsers, setErrorUsers]     = useState(null)
 
-  // — Groups state —
-  const [groups, setGroups] = useState([])
+  const [groups, setGroups]             = useState([])
   const [loadingGroups, setLoadingGroups] = useState(false)
-  const [errorGroups, setErrorGroups] = useState(null)
+  const [errorGroups, setErrorGroups]   = useState(null)
 
-  // 1️⃣ If no member, fetch all users for login
   useEffect(() => {
     if (!member) {
       setLoadingUsers(true)
       fetch('/api/users')
-        .then(r => {
-          if (!r.ok) throw new Error(r.statusText)
-          return r.json()
-        })
+        .then(r => { if (!r.ok) throw new Error(r.statusText); return r.json() })
         .then(setUsers)
         .catch(err => setErrorUsers(err.message))
         .finally(() => setLoadingUsers(false))
     }
   }, [member])
 
-  // 2️⃣ Once you have a member, fetch *only* their groups
   useEffect(() => {
     if (member) {
       setLoadingGroups(true)
       fetch(`/api/groups?memberId=${member.id}`)
-        .then(r => {
-          if (!r.ok) throw new Error(r.statusText)
-          return r.json()
-        })
+        .then(r => { if (!r.ok) throw new Error(r.statusText); return r.json() })
         .then(setGroups)
         .catch(err => setErrorGroups(err.message))
         .finally(() => setLoadingGroups(false))
     }
   }, [member])
 
-  // ← Login UI
   if (!member) {
     if (loadingUsers) return <div style={styles.loading}>Loading users…</div>
     if (errorUsers)  return <div style={styles.error}>Error: {errorUsers}</div>
+
+    if (users.length === 0) {
+      return (
+        <div style={styles.page}>
+          <div style={styles.container}>
+            <button
+              style={styles.plusButton}
+              onClick={() => navigate('/create-group')}
+            >＋</button>
+          </div>
+        </div>
+      )
+    }
 
     return (
       <div style={styles.page}>
@@ -76,12 +79,15 @@ export default function LandingPage() {
               </li>
             ))}
           </ul>
+          <button
+            style={styles.plusButton}
+            onClick={() => navigate('/create-group')}
+          >＋</button>
         </div>
       </div>
     )
   }
 
-  // ← Groups UI
   if (loadingGroups) return <div style={styles.loading}>Loading groups…</div>
   if (errorGroups)  return <div style={styles.error}>Error: {errorGroups}</div>
 
@@ -89,28 +95,32 @@ export default function LandingPage() {
     <div style={styles.page}>
       <div style={styles.container}>
         <h2 style={styles.title}>Your Trips</h2>
-
         <div style={styles.userSection}>
-          <p style={styles.welcome}>
-            Viewing as <strong>{member.name}</strong>
-          </p>
-          <button style={styles.logoutButton} onClick={logout}>
-            Log Out
-          </button>
+          <p style={styles.welcome}>Viewing as <strong>{member.name}</strong></p>
+          <button style={styles.logoutButton} onClick={logout}>Log Out</button>
         </div>
-
-        <ul style={styles.list}>
+        <div style={styles.cardsContainer}>
           {groups.map(g => (
-            <li key={g.id} style={styles.listItem}>
-              <Link to={`/group?group=${g.id}`} style={styles.link}>
+            <div
+              key={g.id}
+              style={styles.groupCard}
+              onClick={() => navigate(`/group?group=${g.id}`)}
+            >
+              <div style={styles.cardLeft}>
                 <span style={styles.icon}>🏖️</span>
-                <span style={styles.name}>{g.name}</span>
+                <span style={styles.groupName}>{g.name}</span>
+              </div>
+              <div style={styles.cardRight}>
                 <span style={styles.count}>({g.members.length})</span>
                 <span style={styles.arrow}>›</span>
-              </Link>
-            </li>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
+        <button
+          style={styles.plusButton}
+          onClick={() => navigate('/create-group')}
+        >＋</button>
       </div>
     </div>
   )
@@ -120,7 +130,6 @@ const styles = {
   page: {
     backgroundColor: COLORS.pageBg,
     minHeight: '100vh',
-    width: '100%',
     color: COLORS.text,
     fontFamily: 'Arial, sans-serif',
   },
@@ -128,6 +137,7 @@ const styles = {
     maxWidth: '600px',
     margin: '0 auto',
     padding: '16px',
+    position: 'relative',
   },
   title: {
     marginBottom: '16px',
@@ -135,10 +145,17 @@ const styles = {
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  list: {
+    listStyle: 'none',
+    padding: 0,
+    margin: '0 0 24px',
+  },
+  listItem: {
+    marginBottom: '8px',
+  },
   loginButton: {
     width: '100%',
     padding: '12px',
-    margin: '8px 0',
     backgroundColor: COLORS.cardBg,
     border: '1px solid #444',
     borderRadius: '4px',
@@ -149,15 +166,12 @@ const styles = {
   },
   userSection: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '12px',
-    marginBottom: '16px',
-    minHeight: '2.5rem',
+    justifyContent: 'space-between',
+    marginBottom: '24px',
   },
   welcome: {
+    margin: 0,
     fontSize: '1rem',
-    textAlign: 'center',
     opacity: 0.9,
   },
   logoutButton: {
@@ -166,28 +180,53 @@ const styles = {
     border: 'none',
     borderRadius: '4px',
     color: COLORS.text,
-    fontSize: '0.9rem',
+    cursor: 'pointer',
+  },
+  cardsContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px',
+    marginBottom: '24px',
+  },
+  groupCard: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: COLORS.cardBg,
+    padding: '12px 16px',
+    borderRadius: '8px',
     cursor: 'pointer',
     transition: 'background-color 0.2s',
   },
-  list: {
-    listStyle: 'none',
-    padding: 0,
-    margin: 0,
-  },
-  listItem: { overflow: 'hidden' },
-  link: {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '12px 16px',
-    color: COLORS.text,
-    textDecoration: 'none',
-    transition: 'background-color 0.2s',
-  },
+  cardLeft: { display: 'flex', alignItems: 'center' },
+  cardRight: { display: 'flex', alignItems: 'center' },
   icon: { marginRight: '12px', fontSize: '1.5rem' },
-  name: { flexGrow: 1, fontSize: '1rem' },
-  count: { marginRight: '8px', fontSize: '0.9rem', opacity: 0.75 },
+  groupName: { fontSize: '1rem', fontWeight: '500' },
+  count: { marginRight: '8px', opacity: 0.75 },
   arrow: { fontSize: '1.2rem' },
-  loading: { padding: '24px', textAlign: 'center', color: COLORS.text },
-  error: { padding: '24px', textAlign: 'center', color: 'red' },
+  plusButton: {
+    position: 'absolute',
+    bottom: '16px',
+    right: '16px',
+    width: '56px',
+    height: '56px',
+    borderRadius: '50%',
+    backgroundColor: COLORS.accent,
+    color: COLORS.text,
+    fontSize: '2rem',
+    border: 'none',
+    cursor: 'pointer',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+    lineHeight: 0.9,
+  },
+  loading: {
+    padding: '24px',
+    textAlign: 'center',
+    color: COLORS.text,
+  },
+  error: {
+    padding: '24px',
+    textAlign: 'center',
+    color: 'red',
+  },
 }
